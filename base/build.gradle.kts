@@ -21,4 +21,6 @@ dependencies {
 project.apply {
   from("$rootDir/gradle/ktlint.gradle")
   from("$rootDir/gradle/lint.gradle")
+  from("$rootDir/gradle/android-artifacts.gradle")
+  from("$rootDir/gradle/bintray-publish.gradle")
 }
