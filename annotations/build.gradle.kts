@@ -14,5 +14,5 @@ dependencies {
 
 project.apply {
   from("$rootDir/gradle/ktlint.gradle")
-  from("$rootDir/gradle/gradle-bintray.gradle")
+  from("$rootDir/gradle/gradle-bintray.gradle.kts")
 }

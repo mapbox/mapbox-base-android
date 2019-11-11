@@ -8,6 +8,9 @@ buildscript {
     classpath(Plugins.kotlin)
     classpath(Plugins.license)
     classpath(Plugins.dokka)
+    classpath(Plugins.androidPublish)
+    classpath(Plugins.bintray)
+    classpath(Plugins.artifactory)
   }
 }
 
