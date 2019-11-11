@@ -38,11 +38,43 @@ commands:
   build-release-libraries:
     steps:
       - run:
-          name: Build libraries
+          name: Build libraries for release
+          command: make buildRelease
+
+  build-debug-libraries:
+    steps:
+      - run:
+          name: Build libraries for debug
+          command: make buildDebug
+
+  update-version-name:
+    steps:
+      - run:
+          name: Update version name
           command: |
-            ./gradlew annotations:assemble && \
-            ./gradlew annotations-processor:assemble && \
-            ./gradlew base:assembleRelease
+            if [[ $CIRCLE_TAG == v* ]]; then
+              sed -i -e "s/^VERSION_NAME=.*/VERSION_NAME=${CIRCLE_TAG:1}/" gradle.properties
+            fi
+
+  publish:
+    steps:
+      - run:
+          name: Generate Bintray credentials
+          command: |
+            if [ -n "${BINTRAY_USER}" ]; then
+              echo "BINTRAY_USER=$BINTRAY_USER
+              BINTRAY_API_KEY=$BINTRAY_API_KEY
+              GPG_PASSPHRASE=$GPG_PASSPHRASE"
+            fi
+      - deploy:
+          name: Publish Base SDK artifacts to Bintray
+          command: |
+            if [[ $CIRCLE_BRANCH == master ]] || [[ $CIRCLE_TAG == v* ]]; then
+              version=$(cat gradle.properties | grep "VERSION_NAME")
+              if [[ $version != *"SNAPSHOT"* ]]; then
+                make bintrayPublish
+              fi
+            fi
 
 jobs:
   verify-code:
@@ -63,11 +95,32 @@ jobs:
       - restore-gradle-cache
       - build-release-libraries
 
+  build-debug:
+    docker:
+      - image: mbgl/android-ndk-r20:7b7c4b42cf
+    steps:
+      - checkout
+      - restore-gradle-cache
+      - build-debug-libraries
+
+  release:
+    docker:
+      - image: mbgl/android-ndk-r20:7b7c4b42cf
+    steps:
+      - checkout
+      - restore-gradle-cache
+      - update-version-name
+      - build-release-libraries
+      - publish
+
 workflows:
   version: 2
   build:
     jobs:
       - verify-code
-      - build-release:
+      - build-debug:
+          requires:
+            - verify-code
+      - release:
           requires:
             - verify-code
