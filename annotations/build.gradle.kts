@@ -12,7 +12,7 @@ dependencies {
   api(Dependencies.annotations)
 }
 
-
 project.apply {
   from("$rootDir/gradle/ktlint.gradle")
+  from("$rootDir/gradle/gradle-bintray.gradle")
 }
