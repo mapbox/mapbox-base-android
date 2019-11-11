@@ -1,7 +1,6 @@
 plugins {
   kotlin("jvm")
   kotlin("kapt")
-  id("org.jetbrains.dokka-android")
 }
 
 dependencies {

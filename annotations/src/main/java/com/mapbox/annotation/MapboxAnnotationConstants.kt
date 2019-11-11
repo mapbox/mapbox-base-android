@@ -49,7 +49,6 @@ const val MODULE_CONFIGURATION_PROVIDER_VARIABLE_NAME = "moduleProvider"
  */
 const val MODULE_CONFIGURATION_PROVIDER_METHOD_FORMAT = "create%s"
 
-
 /* ----- PLUGINS CONFIGURATION ----- */
 
 /**
