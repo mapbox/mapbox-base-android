@@ -1,0 +1,73 @@
+version: 2.1
+commands:
+  restore-gradle-cache:
+    steps:
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "build.gradle.kts" }}-{{ checksum "annotations/build.gradle.kts" }}-{{ checksum "annotations-processor/build.gradle.kts" }}-{{ checksum "base/build.gradle.kts" }}
+            - v1-dependencies-
+      - run:
+          name: Download dependencies
+          command: ./gradlew dependencies
+      - save_cache:
+          paths:
+            - ~/.gradle
+          key: v1-dependencies-{{ checksum "build.gradle.kts" }}-{{ checksum "annotations/build.gradle.kts" }}-{{ checksum "annotations-processor/build.gradle.kts" }}-{{ checksum "base/build.gradle.kts" }}
+
+  validate-license:
+    steps:
+      - run:
+          name: Validate LICENSE.md
+          command: python scripts/license-validate.py
+
+  static-code-analysis:
+    steps:
+      - run:
+          name: Run ktlint
+          command: ./gradlew ktlint
+      - run:
+          name: Run lint
+          command: ./gradlew lint
+
+  validate-dokka-docs:
+    steps:
+      - run:
+          name: Validate dokka docs
+          command: sh scripts/kdoc-validate.sh
+
+  build-release-libraries:
+    steps:
+      - run:
+          name: Build libraries
+          command: |
+            ./gradlew annotations:assemble && \
+            ./gradlew annotations-processor:assemble && \
+            ./gradlew base:assembleRelease
+
+jobs:
+  verify-code:
+    docker:
+      - image: mbgl/android-ndk-r20:7b7c4b42cf
+    steps:
+      - checkout
+      - restore-gradle-cache
+      - validate-license
+      - static-code-analysis
+      - validate-dokka-docs
+
+  build-release:
+    docker:
+      - image: mbgl/android-ndk-r20:7b7c4b42cf
+    steps:
+      - checkout
+      - restore-gradle-cache
+      - build-release-libraries
+
+workflows:
+  version: 2
+  build:
+    jobs:
+      - verify-code
+      - build-release:
+          requires:
+            - verify-code
