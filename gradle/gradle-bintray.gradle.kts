@@ -1,18 +1,29 @@
 import com.jfrog.bintray.gradle.BintrayExtension
 
+buildscript {
+  repositories {
+    google()
+    jcenter()
+  }
+  dependencies {
+    classpath(Plugins.androidPublish)
+    classpath(Plugins.bintray)
+    classpath(Plugins.artifactory)
+  }
+}
+
 apply(plugin = "digital.wup.android-maven-publish")
 apply(plugin = "maven-publish")
 apply(plugin = "com.jfrog.bintray")
-apply(plugin = "com.jfrog.artifactory")
 
 val isAndroid: String by project
 val mapboxArtifactId: String by project
 val artifactVersion: String by project
 val artifactTitle: String by project
 val artifactDescription: String by project
-val bintrayUser: String by project
-val bintrayApiKey: String by project
-val gpgPassphrase: String by project
+val bintrayUser: String = System.getenv("BINTRAY_USER") ?: ""
+val bintrayApiKey: String = System.getenv("BINTRAY_API_KEY") ?: ""
+val gpgPassphrase: String = System.getenv("GPG_PASSPHRASE") ?: ""
 
 configure<PublishingExtension> {
   publications {
@@ -72,7 +83,7 @@ configure<BintrayExtension> {
   val pkgVersion = VersionConfig()
   pkgVersion.name = artifactVersion
   pkgVersion.desc = artifactDescription
-  pkgVersion.released = java.util.Date()
+  pkgVersion.released = java.util.Date().toString()
 
   val gpgConfig = GpgConfig()
   gpgConfig.sign = true
