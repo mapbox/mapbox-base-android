@@ -10,21 +10,17 @@ group = project.ext.mapboxArtifactGroupId
 publishing {
     publications {
         MapboxBasePublication(MavenPublication) {
-            if (project.ext.isAndroidProject.toBoolean()) {
-                from components.android
-
-                afterEvaluate {
+            afterEvaluate {
+                if (project.ext.isAndroidProject.toBoolean()) {
+                    from components.android
                     artifact(androidSourcesJar)
-                    artifact(androidJavadocsJar)
-                }
-            } else {
-                from components.java
-
-                afterEvaluate {
+                } else {
+                    from components.java
                     artifact(sourcesJar)
-                    artifact(javadocJar)
                 }
+                artifact(javadocsJar)
             }
+
             groupId this.group
             artifactId project.ext.mapboxArtifactId
             version this.version
@@ -77,6 +73,11 @@ bintray {
             }
         }
     }
+}
+
+task javadocsJar(type: Jar, dependsOn: dokka) {
+    classifier = 'javadoc'
+    from dokka.outputDirectory
 }
 
 tasks.withType(Javadoc) {
