@@ -75,6 +75,20 @@ bintray {
     }
 }
 
+artifactory {
+    contextUrl = 'http://oss.jfrog.org'
+    publish {
+        repository {
+            repoKey = 'oss-snapshot-local'
+            username = mapboxBintrayUser
+            password = mapboxBintrayApiKey
+        }
+        defaults {
+            publications('MapboxBasePublication')
+        }
+    }
+}
+
 task javadocsJar(type: Jar, dependsOn: dokka) {
     classifier = 'javadoc'
     from dokka.outputDirectory
