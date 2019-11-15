@@ -25,3 +25,6 @@ bintrayPublish:
 
 .PHONY: artifactoryPublish
 artifactoryPublish:
+	./gradlew :annotations:artifactoryPublish ; \
+	./gradlew :annotations-processor:artifactoryPublish ; \
+	./gradlew :base:artifactoryPublish ; \
