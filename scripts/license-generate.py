@@ -3,15 +3,15 @@ import json
 import os
 
 # run gradle license generation
-os.system("./gradlew base:licenseReleaseReport")
+os.system("./gradlew common:licenseReport")
 
 # convert output to LICENSE.md file
 path = os.getcwd()
 try:
     with open(path + "/LICENSE.md", 'w+') as licenseFile:
         licenseFile.write("<!-- This file was generated. Use `python scripts/license-generate.py`to update. -->  \n")
-        licenseFile.write("## Additional Mapbox Base Android licenses  \n")
-        with open(path + "/base/build/reports/licenses/licenseReleaseReport.json", 'r') as dataFile:
+        licenseFile.write("## Additional Mapbox Base Android licenses\n")
+        with open(path + "/common/build/reports/licenses/licenseReport.json", 'r') as dataFile:
             data = json.load(dataFile)
 
             gradleLicensePlugin ="""
@@ -44,6 +44,6 @@ except IOError as (errno,strerror):
     print "I/O error({0}): {1}".format(errno, strerror)
 
 # remove obsolete open_source_licenses.html
-os.system("rm -f base/src/main/assets/open_source_licenses.html")
+# os.system("rm -f common/src/main/assets/open_source_licenses.html")
 
 

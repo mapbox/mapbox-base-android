@@ -1,11 +1,5 @@
 <!-- This file was generated. Use `python scripts/license-generate.py`to update. -->  
-## Additional Mapbox Base Android licenses  
-Mapbox Base Android uses portions of the Android Support Library Annotations.  
-URL: [http://developer.android.com/tools/extras/support-library.html](http://developer.android.com/tools/extras/support-library.html)  
-License: [The Apache Software License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
-
-===========================================================================
-
+## Additional Mapbox Base Android licenses
 Mapbox Base Android uses portions of the IntelliJ IDEA Annotations.  
 URL: [http://www.jetbrains.org](http://www.jetbrains.org)  
 License: [The Apache Software License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
