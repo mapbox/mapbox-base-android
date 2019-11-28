@@ -1,7 +1,6 @@
 .PHONY: check
 check:
 	./gradlew ktlint;
-	./gradlew lint;
 	sh scripts/kdoc-validate.sh;
 	python scripts/license-validate.py
 
@@ -9,22 +8,22 @@ check:
 buildDebug:
 	./gradlew annotations:assemble && \
     ./gradlew annotations-processor:assemble && \
-    ./gradlew base:assembleDebug
+    ./gradlew common:assemble
 
 .PHONY: buildRelease
 buildRelease:
 	./gradlew annotations:assemble && \
     ./gradlew annotations-processor:assemble && \
-    ./gradlew base:assembleRelease
+    ./gradlew common:assemble
 
 .PHONY: bintrayPublish
 bintrayPublish:
 	./gradlew :annotations:bintrayUpload ; \
 	./gradlew :annotations-processor:bintrayUpload ; \
-	./gradlew :base:bintrayUpload ; \
+	./gradlew :common:bintrayUpload ; \
 
 .PHONY: artifactoryPublish
 artifactoryPublish:
 	./gradlew :annotations:artifactoryPublish ; \
 	./gradlew :annotations-processor:artifactoryPublish ; \
-	./gradlew :base:artifactoryPublish ; \
+	./gradlew :common:artifactoryPublish ; \

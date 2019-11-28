@@ -4,7 +4,7 @@ commands:
     steps:
       - restore_cache:
           keys:
-            - v1-dependencies-{{ checksum "build.gradle.kts" }}-{{ checksum "annotations/build.gradle.kts" }}-{{ checksum "annotations-processor/build.gradle.kts" }}-{{ checksum "base/build.gradle.kts" }}
+            - v1-dependencies-{{ checksum "build.gradle.kts" }}-{{ checksum "annotations/build.gradle.kts" }}-{{ checksum "annotations-processor/build.gradle.kts" }}-{{ checksum "common/build.gradle.kts" }}
             - v1-dependencies-
       - run:
           name: Download dependencies
@@ -12,7 +12,7 @@ commands:
       - save_cache:
           paths:
             - ~/.gradle
-          key: v1-dependencies-{{ checksum "build.gradle.kts" }}-{{ checksum "annotations/build.gradle.kts" }}-{{ checksum "annotations-processor/build.gradle.kts" }}-{{ checksum "base/build.gradle.kts" }}
+          key: v1-dependencies-{{ checksum "build.gradle.kts" }}-{{ checksum "annotations/build.gradle.kts" }}-{{ checksum "annotations-processor/build.gradle.kts" }}-{{ checksum "common/build.gradle.kts" }}
 
   validate-license:
     steps:
@@ -25,9 +25,6 @@ commands:
       - run:
           name: Run ktlint
           command: ./gradlew ktlint
-      - run:
-          name: Run lint
-          command: ./gradlew lint
 
   validate-dokka-docs:
     steps:
