@@ -10,5 +10,10 @@ enum class MapboxModuleType(val interfacePackage: String, val interfaceClassName
   /**
    * Module used to load native libraries.
    */
-  LibraryLoader("com.mapbox.common.module", "LibraryLoader")
+  LibraryLoader("com.mapbox.common.module", "LibraryLoader"),
+
+  /**
+   * Module used to perform http request.
+   */
+  HttpClient("com.mapbox.common", "HttpServiceInterface")
 }
