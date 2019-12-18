@@ -8,13 +8,13 @@ check:
 buildDebug:
 	./gradlew annotations:assemble && \
     ./gradlew annotations-processor:assemble && \
-    ./gradlew common:assemble
+    ./gradlew common:assembleDebug
 
 .PHONY: buildRelease
 buildRelease:
 	./gradlew annotations:assemble && \
     ./gradlew annotations-processor:assemble && \
-    ./gradlew common:assemble
+    ./gradlew common:assembleRelease
 
 .PHONY: bintrayPublish
 bintrayPublish:

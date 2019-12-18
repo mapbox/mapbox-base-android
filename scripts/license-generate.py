@@ -3,7 +3,7 @@ import json
 import os
 
 # run gradle license generation
-os.system("./gradlew common:licenseReport")
+os.system("./gradlew common:licenseReleaseReport")
 
 # convert output to LICENSE.md file
 path = os.getcwd()
