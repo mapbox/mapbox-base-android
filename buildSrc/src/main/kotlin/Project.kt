@@ -19,7 +19,6 @@ object Dependencies {
   const val annotations = "androidx.annotation:annotation:${Versions.androidX}"
   const val kotlinPoet = "com.squareup:kotlinpoet:${Versions.kotlinPoet}"
   const val serviceProvider = "com.google.auto.service:auto-service:${Versions.serviceProvider}"
-  const val soloader = "com.facebook.soloader:soloader:${Versions.soloader}"
 }
 
 private object Versions {
