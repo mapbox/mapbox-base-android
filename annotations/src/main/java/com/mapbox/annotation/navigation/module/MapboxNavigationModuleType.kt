@@ -8,9 +8,9 @@ package com.mapbox.annotation.navigation.module
 enum class MapboxNavigationModuleType(val interfacePackage: String, val interfaceClassName: String) {
 
   /**
-   * Main navigation router that combines [OffboardRouter] and [OnboardRouter] to provide the best available route.
+   * Main router used by the Navigation SDK. The default implementation combines [OffboardRouter] and [OnboardRouter] to provide the best available route.
    */
-  HybridRouter("com.mapbox.navigation.base.route", "Router"),
+  Router("com.mapbox.navigation.base.route", "Router"),
 
   /**
    * If [HybridRouter] is used, this provides the online routing capabilities.
@@ -23,24 +23,9 @@ enum class MapboxNavigationModuleType(val interfacePackage: String, val interfac
   OnboardRouter("com.mapbox.navigation.base.route", "Router"),
 
   /**
-   * Session that maintains the currently requested route.
-   */
-  DirectionsSession("com.mapbox.navigation.base.route", "DirectionsSession"),
-
-  /**
    * Foreground service notification displayed when [TripService].
    */
   TripNotification("com.mapbox.navigation.base.trip", "TripNotification"),
-
-  /**
-   * Manages the Android foreground service when [TripSession] is active
-   */
-  TripService("com.mapbox.navigation.base.trip", "TripService"),
-
-  /**
-   * Session that maintains the trip. This means managing location updates in free drive and navigation modes.
-   */
-  TripSession("com.mapbox.navigation.base.trip", "TripSession"),
 
   /**
    * Exposes logger hooks.
