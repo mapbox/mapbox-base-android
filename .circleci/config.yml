@@ -14,6 +14,12 @@ commands:
             - ~/.gradle
           key: v1-dependencies-{{ checksum "build.gradle.kts" }}-{{ checksum "annotations/build.gradle.kts" }}-{{ checksum "annotations-processor/build.gradle.kts" }}-{{ checksum "common/build.gradle.kts" }}
 
+  run-unit-tests:
+    steps:
+      - run:
+          name: Run unit tests
+          command: make runUnitTests
+
   validate-license:
     steps:
       - run:
@@ -82,6 +88,7 @@ jobs:
     steps:
       - checkout
       - restore-gradle-cache
+      - run-unit-tests
       - validate-license
       - static-code-analysis
       - validate-dokka-docs

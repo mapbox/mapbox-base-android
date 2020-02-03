@@ -13,7 +13,7 @@ import com.mapbox.annotation.MODULE_CONFIGURATION_CLASS_NAME_FORMAT
  * 3. Inject predefined Mapbox parameters. This is for internal and Mapbox default modules use only.
  *
  * If set to `false`, the SDK will generate a static provider, with class name equal to: [MODULE_CONFIGURATION_CLASS_NAME_FORMAT].
- * For example, for [MapboxModuleType.name] equal to "LibraryLoader",
+ * For example, for [MapboxModuleType.moduleName] equal to "LibraryLoader",
  * the instance's provider can be assigned using `Mapbox_LibraryLoaderModuleConfiguration#moduleProvider`.
  */
 @Target(AnnotationTarget.CLASS)

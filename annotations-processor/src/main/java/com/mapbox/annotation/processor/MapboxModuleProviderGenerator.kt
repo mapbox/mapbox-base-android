@@ -28,7 +28,7 @@ class MapboxModuleProviderGenerator : ModuleProviderGenerator(
         modules.add(
           Module(
             skipConfig,
-            type.name,
+            type.moduleName,
             type.interfacePackage,
             type.interfaceClassName,
             implPackage,
