@@ -10,11 +10,6 @@ package com.mapbox.annotation
 const val MODULE_PROVIDER_PACKAGE = "com.mapbox.module"
 
 /**
- * Package that holds generated Mapbox navigation module configurations.
- */
-const val MODULE_PROVIDER_PACKAGE_NAVIGATION = "$MODULE_PROVIDER_PACKAGE.navigation"
-
-/**
  * Format of the configuration class name.
  */
 const val MODULE_CONFIGURATION_CLASS_NAME_FORMAT = "Mapbox_%sModuleConfiguration"

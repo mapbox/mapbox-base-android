@@ -19,10 +19,12 @@ object Dependencies {
   const val annotations = "androidx.annotation:annotation:${Versions.androidX}"
   const val kotlinPoet = "com.squareup:kotlinpoet:${Versions.kotlinPoet}"
   const val serviceProvider = "com.google.auto.service:auto-service:${Versions.serviceProvider}"
+  const val mockk = "io.mockk:mockk:${Versions.mockk}"
+  const val junit = "androidx.test.ext:junit:${Versions.junit}"
 }
 
 private object Versions {
-  const val tools = "3.5.0"
+  const val tools = "3.5.2"
   const val kotlin = "1.3.41"
   const val androidX = "1.1.0"
   const val license = "0.8.5"
@@ -33,6 +35,8 @@ private object Versions {
   const val bintray = "1.8.4"
   const val androidPublish = "3.6.2"
   const val artifactory = "4.9.3"
+  const val mockk = "1.9.3"
+  const val junit = "1.1.1"
 }
 
 object ArtifactSettings {

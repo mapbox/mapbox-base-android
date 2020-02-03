@@ -1,8 +1,7 @@
 plugins {
-  id("com.android.library")
+  id("com.android.application")
   kotlin("android")
-  id("com.jaredsburrows.license")
-  id("org.jetbrains.dokka-android")
+  kotlin("kapt")
 }
 
 android {
@@ -18,17 +17,16 @@ android {
 dependencies {
   implementation(Dependencies.kotlin)
 
-  implementation(project(":annotations"))
+  compileOnly(project(":annotations"))
+  kapt(project(":annotations-processor"))
+  implementation(project(":common"))
 
-  /**
-   * Required for @Keep annotation by the annotation-processor and the resulting generated code
-   */
-  implementation(Dependencies.annotations)
+  testImplementation(Dependencies.mockk)
+  testImplementation(Dependencies.junit)
+  testImplementation(project(":annotations"))
 }
 
 project.apply {
   from("$rootDir/gradle/ktlint.gradle")
   from("$rootDir/gradle/lint.gradle")
-  from("$rootDir/gradle/android-artifacts.gradle")
-  from("$rootDir/gradle/bintray-publish.gradle")
 }

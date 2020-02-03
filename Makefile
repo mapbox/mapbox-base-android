@@ -27,3 +27,7 @@ artifactoryPublish:
 	./gradlew :annotations:artifactoryPublish ; \
 	./gradlew :annotations-processor:artifactoryPublish ; \
 	./gradlew :common:artifactoryPublish ; \
+
+.PHONY: runUnitTests
+runUnitTests:
+	./gradlew examples:test
