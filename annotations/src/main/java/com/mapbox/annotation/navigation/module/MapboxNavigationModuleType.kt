@@ -1,7 +1,8 @@
 package com.mapbox.annotation.navigation.module
 
 /**
- * Desribes Navigation Module's type. The annotatted implementation class needs to extends the base interface.
+ * Describes Navigation Module's type. The annotated implementation class needs to extends the base interface.
+ *
  * @param interfacePackage package of the base interface.
  * @param interfaceClassName class name of the base interface.
  */
@@ -13,17 +14,17 @@ enum class MapboxNavigationModuleType(val interfacePackage: String, val interfac
   Router("com.mapbox.navigation.base.route", "Router"),
 
   /**
-   * If [HybridRouter] is used, this provides the online routing capabilities.
+   * If [Router] is used, this provides the online routing capabilities.
    */
   OffboardRouter("com.mapbox.navigation.base.route", "Router"),
 
   /**
-   * If [HybridRouter] is used, this provides the offline routing capabilities.
+   * If [Router] is used, this provides the offline routing capabilities.
    */
   OnboardRouter("com.mapbox.navigation.base.route", "Router"),
 
   /**
-   * Foreground service notification displayed when [TripService].
+   * Foreground service notification displayed when navigation's trip session is started.
    */
   TripNotification("com.mapbox.navigation.base.trip", "TripNotification"),
 
