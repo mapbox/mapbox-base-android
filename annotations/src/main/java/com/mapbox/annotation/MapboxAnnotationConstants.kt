@@ -35,12 +35,12 @@ const val MODULE_CONFIGURATION_SKIPPED_PACKAGE = "implPackage"
 const val MODULE_CONFIGURATION_SKIPPED_CLASS = "implClassName"
 
 /**
- * When configuration is not skipepd, configuration's module provider class name.
+ * When configuration is not skipped, configuration's module provider class name.
  */
 const val MODULE_CONFIGURATION_PROVIDER_CLASS_NAME = "ModuleProvider"
 
 /**
- * When configuration is not skipepd, configuration's module provider variable name.
+ * When configuration is not skipped, configuration's module provider variable name.
  */
 const val MODULE_CONFIGURATION_PROVIDER_VARIABLE_NAME = "moduleProvider"
 
