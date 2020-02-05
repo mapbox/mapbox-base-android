@@ -21,6 +21,7 @@ object Dependencies {
   const val serviceProvider = "com.google.auto.service:auto-service:${Versions.serviceProvider}"
   const val mockk = "io.mockk:mockk:${Versions.mockk}"
   const val junit = "androidx.test.ext:junit:${Versions.junit}"
+  const val navigationBase = "com.mapbox.navigation:base:${Versions.navigationBase}"
 }
 
 private object Versions {
@@ -37,6 +38,7 @@ private object Versions {
   const val artifactory = "4.9.3"
   const val mockk = "1.9.3"
   const val junit = "1.1.1"
+  const val navigationBase = "1.0.0-beta.1"
 }
 
 object ArtifactSettings {
