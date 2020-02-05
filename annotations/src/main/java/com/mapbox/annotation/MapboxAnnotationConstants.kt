@@ -17,25 +17,25 @@ const val MODULE_CONFIGURATION_CLASS_NAME_FORMAT = "Mapbox_%sModuleConfiguration
 /**
  * Skip configuration boolean variable name.
  */
-const val MODULE_CONFIGURATION_SKIP_VARIABLE = "skipConfiguration"
+const val MODULE_CONFIGURATION_ENABLE_CONFIGURATION = "enableConfiguration"
 
 /**
- * When configuration is skipped, module implementation package string variable name.
+ * When configuration is disabled, module implementation package string variable name.
  */
-const val MODULE_CONFIGURATION_SKIPPED_PACKAGE = "implPackage"
+const val MODULE_CONFIGURATION_DISABLED_PACKAGE = "implPackage"
 
 /**
- * When configuration is skipped, module implementation class name string variable name.
+ * When configuration is disabled, module implementation class name string variable name.
  */
-const val MODULE_CONFIGURATION_SKIPPED_CLASS = "implClassName"
+const val MODULE_CONFIGURATION_DISABLED_CLASS = "implClassName"
 
 /**
- * When configuration is not skipped, configuration's module provider class name.
+ * When configuration is enabled, configuration's module provider class name.
  */
 const val MODULE_CONFIGURATION_PROVIDER_CLASS_NAME = "ModuleProvider"
 
 /**
- * When configuration is not skipped, configuration's module provider variable name.
+ * When configuration is enabled, configuration's module provider variable name.
  */
 const val MODULE_CONFIGURATION_PROVIDER_VARIABLE_NAME = "moduleProvider"
 

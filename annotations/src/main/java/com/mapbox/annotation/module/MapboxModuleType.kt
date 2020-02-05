@@ -7,7 +7,7 @@ enum class MapboxModuleType(
   /**
    * Module's simplified name.
    */
-  val moduleName: String,
+  val simplifiedName: String,
 
   /**
    * Package of the module's contract.

@@ -7,6 +7,6 @@ import com.mapbox.common.module.LibraryLoader
 @MapboxModule(MapboxModuleType.CommonLibraryLoader)
 class MyLibraryLoader : LibraryLoader {
   override fun load(libraryName: String) {
-    TODO("not implemented")
+    // not implemented
   }
 }

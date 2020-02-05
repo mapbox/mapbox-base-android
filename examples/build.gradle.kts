@@ -20,6 +20,7 @@ dependencies {
   compileOnly(project(":annotations"))
   kapt(project(":annotations-processor"))
   implementation(project(":common"))
+  implementation(Dependencies.navigationBase)
 
   testImplementation(Dependencies.mockk)
   testImplementation(Dependencies.junit)
