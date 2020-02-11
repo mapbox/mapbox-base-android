@@ -52,30 +52,21 @@ object MapboxModuleProvider {
           throw MapboxInvalidModuleException(type)
         }
       } else {
-        // configuration was disable, we should get the implementation's class and instantiate it
+        // configuration was disabled, we should get the implementation's class and instantiate it
         val implPackage =
           configurationClass.getMethod(MODULE_CONFIGURATION_DISABLED_PACKAGE.asGetterFun()).invoke(null) as String
         val implClassName =
           configurationClass.getMethod(MODULE_CONFIGURATION_DISABLED_CLASS.asGetterFun()).invoke(null) as String
         val implClass = Class.forName("$implPackage.$implClassName")
 
-        instance = try {
-          createUsingNoArgConstructor(implClass)
-        } catch (ex: Exception) {
-          try {
-            getKotlinObjectRef(implClass)
-          } catch (ex: Exception) {
-            try {
-              getSingletonInstanceRef(implClass)
-            } catch (ex: Exception) {
-              try {
-                createUsingDefaultMapboxParams(implClass, type, paramsProvider)
-              } catch (ex: Exception) {
-                throw MapboxInvalidModuleException(type)
-              }
-            }
+        var foundInstance: Any? = null
+        for (creator in instanceCreators) {
+          foundInstance = creator.getInstance(implClass, type, paramsProvider)
+          if (foundInstance != null) {
+            break
           }
         }
+        instance = foundInstance ?: throw MapboxInvalidModuleException(type)
       }
 
       return instance as T
@@ -89,32 +80,83 @@ object MapboxModuleProvider {
     }
   }
 
-  private fun createUsingNoArgConstructor(implClass: Class<*>): Any {
-    // try to invoke a no-arg, public constructor
-    val constructor = implClass.getConstructor()
-    return constructor.newInstance()
+  /**
+   * Try to invoke a no-arg, public constructor.
+   */
+  private val noArgConstructorCreator = object : ModuleInstanceProvider {
+    override fun getInstance(implClass: Class<*>, type: MapboxModuleType, paramsProvider: (MapboxModuleType) -> Array<Pair<Class<*>?, Any?>>): Any? {
+      return try {
+        val constructor = implClass.getConstructor()
+        constructor.newInstance()
+      } catch (ex: Exception) {
+        null
+      }
+    }
   }
 
-  private fun getKotlinObjectRef(implClass: Class<*>): Any {
-    // try to create instance of Kotlin object
-    return implClass.getField("INSTANCE").get(null)
+  /**
+   * Try to get the instance of a Kotlin object.
+   */
+  private val kotlinObjectReferenceProvider = object : ModuleInstanceProvider {
+    override fun getInstance(implClass: Class<*>, type: MapboxModuleType, paramsProvider: (MapboxModuleType) -> Array<Pair<Class<*>?, Any?>>): Any? {
+      return try {
+        implClass.getField("INSTANCE").get(null)
+      } catch (ex: Exception) {
+        null
+      }
+    }
   }
 
-  private fun getSingletonInstanceRef(implClass: Class<*>): Any {
-    // try to get instance of singleton
-    return implClass.getMethod("getInstance").invoke(null)
+  /**
+   * Try to get the instance of a singleton.
+   */
+  private val singletonReferenceProvider = object : ModuleInstanceProvider {
+    override fun getInstance(implClass: Class<*>, type: MapboxModuleType, paramsProvider: (MapboxModuleType) -> Array<Pair<Class<*>?, Any?>>): Any? {
+      return try {
+        implClass.getMethod("getInstance").invoke(null)
+      } catch (ex: Exception) {
+        null
+      }
+    }
   }
 
-  private fun createUsingDefaultMapboxParams(
-    implClass: Class<*>,
-    type: MapboxModuleType,
-    paramsProvider: (MapboxModuleType) -> Array<Pair<Class<*>?, Any?>>
-  ): Any {
-    // try find default arguments for Mapbox default module
-    val params = paramsProvider.invoke(type)
-    val constructor =
-      implClass.getConstructor(*params.map { it.first }.toTypedArray())
-    return constructor.newInstance(*params.map { it.second }.toTypedArray())
+  /**
+   * Try to use default arguments for and create a Mapbox default module.
+   */
+  private val defaultMapboxModuleCreator = object : ModuleInstanceProvider {
+    override fun getInstance(implClass: Class<*>, type: MapboxModuleType, paramsProvider: (MapboxModuleType) -> Array<Pair<Class<*>?, Any?>>): Any? {
+      return try {
+        val params = paramsProvider.invoke(type)
+        val constructor =
+          implClass.getConstructor(*params.map { it.first }.toTypedArray())
+        constructor.newInstance(*params.map { it.second }.toTypedArray())
+      } catch (ex: Exception) {
+        null
+      }
+    }
+  }
+
+  /**
+   * Instance creators are called in order until the first one returns a non-null value.
+   *
+   * 1. Create using no-ard constructor
+   * 2. Get Kotlin `object` ref
+   * 3. Get singleton instance ref
+   * 4. Create using Mapbox default params
+   */
+  private val instanceCreators: Array<ModuleInstanceProvider> = arrayOf(
+    noArgConstructorCreator,
+    kotlinObjectReferenceProvider,
+    singletonReferenceProvider,
+    defaultMapboxModuleCreator
+  )
+
+  private interface ModuleInstanceProvider {
+    fun getInstance(
+      implClass: Class<*>,
+      type: MapboxModuleType,
+      paramsProvider: (MapboxModuleType) -> Array<Pair<Class<*>?, Any?>>
+    ): Any?
   }
 
   private fun String.asGetterFun() = "get${this[0].toUpperCase()}${this.substring(1)}"
