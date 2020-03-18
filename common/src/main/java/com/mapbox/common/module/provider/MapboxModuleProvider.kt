@@ -61,7 +61,13 @@ object MapboxModuleProvider {
 
         var foundInstance: Any? = null
         for (creator in instanceCreators) {
-          foundInstance = creator.getInstance(implClass, type, paramsProvider)
+          try {
+            foundInstance = creator.getInstance(implClass, type, paramsProvider)
+          } catch (ex: Exception) {
+            if (ex is MapboxInvalidModuleException) {
+              throw ex
+            }
+          }
           if (foundInstance != null) {
             break
           }
@@ -85,12 +91,8 @@ object MapboxModuleProvider {
    */
   private val noArgConstructorCreator = object : ModuleInstanceProvider {
     override fun getInstance(implClass: Class<*>, type: MapboxModuleType, paramsProvider: (MapboxModuleType) -> Array<Pair<Class<*>?, Any?>>): Any? {
-      return try {
-        val constructor = implClass.getConstructor()
-        constructor.newInstance()
-      } catch (ex: Exception) {
-        null
-      }
+      val constructor = implClass.getConstructor()
+      return constructor.newInstance()
     }
   }
 
@@ -99,11 +101,7 @@ object MapboxModuleProvider {
    */
   private val kotlinObjectReferenceProvider = object : ModuleInstanceProvider {
     override fun getInstance(implClass: Class<*>, type: MapboxModuleType, paramsProvider: (MapboxModuleType) -> Array<Pair<Class<*>?, Any?>>): Any? {
-      return try {
-        implClass.getField("INSTANCE").get(null)
-      } catch (ex: Exception) {
-        null
-      }
+      return implClass.getField("INSTANCE").get(null)
     }
   }
 
@@ -112,11 +110,7 @@ object MapboxModuleProvider {
    */
   private val singletonReferenceProvider = object : ModuleInstanceProvider {
     override fun getInstance(implClass: Class<*>, type: MapboxModuleType, paramsProvider: (MapboxModuleType) -> Array<Pair<Class<*>?, Any?>>): Any? {
-      return try {
-        implClass.getMethod("getInstance").invoke(null)
-      } catch (ex: Exception) {
-        null
-      }
+      return implClass.getMethod("getInstance").invoke(null)
     }
   }
 
@@ -125,14 +119,10 @@ object MapboxModuleProvider {
    */
   private val defaultMapboxModuleCreator = object : ModuleInstanceProvider {
     override fun getInstance(implClass: Class<*>, type: MapboxModuleType, paramsProvider: (MapboxModuleType) -> Array<Pair<Class<*>?, Any?>>): Any? {
-      return try {
-        val params = paramsProvider.invoke(type)
-        val constructor =
-          implClass.getConstructor(*params.map { it.first }.toTypedArray())
-        constructor.newInstance(*params.map { it.second }.toTypedArray())
-      } catch (ex: Exception) {
-        null
-      }
+      val params = paramsProvider.invoke(type)
+      val constructor =
+        implClass.getConstructor(*params.map { it.first }.toTypedArray())
+      return constructor.newInstance(*params.map { it.second }.toTypedArray())
     }
   }
 
@@ -151,6 +141,9 @@ object MapboxModuleProvider {
     defaultMapboxModuleCreator
   )
 
+  /**
+   * @throws Exception
+   */
   private interface ModuleInstanceProvider {
     fun getInstance(
       implClass: Class<*>,
