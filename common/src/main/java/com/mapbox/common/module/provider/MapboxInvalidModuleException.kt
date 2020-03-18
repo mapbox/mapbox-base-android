@@ -8,7 +8,7 @@ import com.mapbox.annotation.module.MapboxModuleType
 /**
  * An exception thrown when there's a missing or wrongly implemented Mapbox module.
  */
-class MapboxInvalidModuleException(type: MapboxModuleType) : RuntimeException(
+data class MapboxInvalidModuleException(private val type: MapboxModuleType) : RuntimeException(
   """
     ${type.name} has been excluded from build but a correct alternative was not provided.
     Make sure that:
