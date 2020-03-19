@@ -5,6 +5,9 @@ import com.mapbox.annotation.MODULE_CONFIGURATION_CLASS_NAME_FORMAT
 /**
  * Annotation that marks an implementation class of the Mapbox module.
  *
+ * For additional documentation and examples, see
+ * [MODULARIZATION.md](https://github.com/mapbox/mapbox-base-android/blob/master/MODULARIZATION.md).
+ *
  * Example:
  * ```
  * @MapboxModule(MapboxModuleType.CommonLibraryLoader)

@@ -2,6 +2,9 @@ package com.mapbox.annotation.module
 
 /**
  * Describes Module's type. The annotated implementation class needs to extends the base interface.
+ *
+ * For additional documentation and examples, see
+ * [MODULARIZATION.md](https://github.com/mapbox/mapbox-base-android/blob/master/MODULARIZATION.md).
  */
 enum class MapboxModuleType(
   /**

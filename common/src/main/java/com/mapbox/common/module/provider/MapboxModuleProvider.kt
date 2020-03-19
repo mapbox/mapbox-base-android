@@ -5,6 +5,9 @@ import com.mapbox.annotation.module.MapboxModuleType
 
 /**
  * Singleton provider of Mapbox modules.
+ *
+ * For additional documentation and examples, see
+ * [MODULARIZATION.md](https://github.com/mapbox/mapbox-base-android/blob/master/MODULARIZATION.md).
  */
 object MapboxModuleProvider {
 
