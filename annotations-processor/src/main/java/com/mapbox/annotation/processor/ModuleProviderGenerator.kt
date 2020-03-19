@@ -14,6 +14,10 @@ import javax.annotation.processing.SupportedOptions
 import javax.lang.model.SourceVersion
 import javax.lang.model.element.TypeElement
 
+/**
+ * For additional documentation and examples, see
+ * [MODULARIZATION.md](https://github.com/mapbox/mapbox-base-android/blob/master/MODULARIZATION.md).
+ */
 @SupportedOptions(ModuleProviderGenerator.KAPT_KOTLIN_GENERATED_OPTION_NAME)
 @AutoService(Processor::class)
 internal class ModuleProviderGenerator : AbstractProcessor() {
