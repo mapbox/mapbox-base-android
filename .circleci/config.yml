@@ -4,7 +4,7 @@ commands:
     steps:
       - restore_cache:
           keys:
-            - v1-dependencies-{{ checksum "build.gradle.kts" }}-{{ checksum "annotations/build.gradle.kts" }}-{{ checksum "annotations-processor/build.gradle.kts" }}-{{ checksum "common/build.gradle.kts" }}
+            - v1-dependencies-{{ checksum "build.gradle.kts" }}-{{ checksum "annotations/build.gradle.kts" }}-{{ checksum "annotations-processor/build.gradle.kts" }}-{{ checksum "common/build.gradle.kts" }}-{{ checksum "liblogger/build.gradle.kts" }}
             - v1-dependencies-
       - run:
           name: Download dependencies
@@ -12,7 +12,7 @@ commands:
       - save_cache:
           paths:
             - ~/.gradle
-          key: v1-dependencies-{{ checksum "build.gradle.kts" }}-{{ checksum "annotations/build.gradle.kts" }}-{{ checksum "annotations-processor/build.gradle.kts" }}-{{ checksum "common/build.gradle.kts" }}
+          key: v1-dependencies-{{ checksum "build.gradle.kts" }}-{{ checksum "annotations/build.gradle.kts" }}-{{ checksum "annotations-processor/build.gradle.kts" }}-{{ checksum "common/build.gradle.kts" }}-{{ checksum "liblogger/build.gradle.kts" }}
 
   run-unit-tests:
     steps:

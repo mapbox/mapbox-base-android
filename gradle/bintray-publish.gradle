@@ -55,7 +55,7 @@ bintray {
     publications('MapboxBasePublication')
     pkg {
         repo = project.ext.mapboxBintrayRepoName
-        name = project.ext.mapboxArtifactId
+        name = group + ':' + project.ext.mapboxArtifactId
         userOrg = project.ext.mapboxBintrayUserOrg
         licenses = [project.ext.mapboxArtifactLicenseName]
         vcsUrl = project.ext.mapboxArtifactVcsUrl
