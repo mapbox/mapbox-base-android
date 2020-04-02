@@ -20,14 +20,9 @@ const val MODULE_CONFIGURATION_CLASS_NAME_FORMAT = "Mapbox_%sModuleConfiguration
 const val MODULE_CONFIGURATION_ENABLE_CONFIGURATION = "enableConfiguration"
 
 /**
- * When configuration is disabled, module implementation package string variable name.
+ * When configuration is disabled, module implementation class reference variable name.
  */
-const val MODULE_CONFIGURATION_DISABLED_PACKAGE = "implPackage"
-
-/**
- * When configuration is disabled, module implementation class name string variable name.
- */
-const val MODULE_CONFIGURATION_DISABLED_CLASS = "implClassName"
+const val MODULE_CONFIGURATION_DISABLED_CLASS = "implClass"
 
 /**
  * When configuration is enabled, configuration's module provider class name.
