@@ -5,6 +5,7 @@ import com.google.auto.service.AutoService
 import com.mapbox.annotation.*
 import com.mapbox.annotation.module.MapboxModule
 import com.squareup.kotlinpoet.*
+import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy
 import com.squareup.kotlinpoet.jvm.jvmStatic
 import java.nio.file.Paths
 import javax.annotation.processing.AbstractProcessor
@@ -136,17 +137,12 @@ internal class ModuleProviderGenerator : AbstractProcessor() {
     } else {
       // if configuration is disabled, generate only impl package and class paths for manual instantiation
       typeBuilder.addProperty(
-        PropertySpec.builder(
-          MODULE_CONFIGURATION_DISABLED_PACKAGE, String::class)
-          .initializer("\"${module.implPackage}\"")
+        PropertySpec.builder(MODULE_CONFIGURATION_DISABLED_CLASS,
+          ClassName.bestGuess("java.lang.Class").parameterizedBy(ClassName.bestGuess("${module.implPackage}.${module.implClassName}")))
+          .initializer("${module.implClassName}::class.java")
           .jvmStatic()
-          .build())
-      typeBuilder.addProperty(
-        PropertySpec.builder(
-          MODULE_CONFIGURATION_DISABLED_CLASS, String::class)
-          .initializer("\"${module.implClassName}\"")
-          .jvmStatic()
-          .build())
+          .build()
+      )
     }
 
     fileBuilder.addType(typeBuilder.build())

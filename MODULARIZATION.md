@@ -82,7 +82,7 @@ class HttpClientImpl(private val okHttpClient: OkHttpClient) : HttpClient, HttpC
   }
 }
 ```
-This class can live anywhere in the project or dependency tree.
+This class can live anywhere in the project or dependency tree, but it has to be publicly available.
 
 ### Module annotations
 To limit erroneous runtime configurations and simplify the configuration, it’s required to annotate a module implementation with the appropriate annotation from the `com.mapbox.base:annotations` artifact found in [this package](https://github.com/mapbox/mapbox-base-android/tree/master/annotations/src/main/java/com/mapbox/annotation):
@@ -123,10 +123,7 @@ object Mapbox_HttpClientModuleConfiguration {
   val enableConfiguration: Boolean = false
 
   @JvmStatic
-  val implPackage: String = "com.mapbox.maps.module.http"
-
-  @JvmStatic
-  val implClassName: String = "HttpClientImpl"
+  val implClass: Class<HttpClientImpl> = HttpClientImpl::class.java
 }
 ```
 

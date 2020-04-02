@@ -56,11 +56,8 @@ object MapboxModuleProvider {
         }
       } else {
         // configuration was disabled, we should get the implementation's class and instantiate it
-        val implPackage =
-          configurationClass.getMethod(MODULE_CONFIGURATION_DISABLED_PACKAGE.asGetterFun()).invoke(null) as String
-        val implClassName =
-          configurationClass.getMethod(MODULE_CONFIGURATION_DISABLED_CLASS.asGetterFun()).invoke(null) as String
-        val implClass = Class.forName("$implPackage.$implClassName")
+        val implClass =
+          configurationClass.getMethod(MODULE_CONFIGURATION_DISABLED_CLASS.asGetterFun()).invoke(null) as Class<T>
 
         var foundInstance: Any? = null
         for (creator in instanceCreators) {
