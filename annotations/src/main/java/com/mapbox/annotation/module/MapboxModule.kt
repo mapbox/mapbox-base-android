@@ -24,8 +24,8 @@ import com.mapbox.annotation.MODULE_CONFIGURATION_CLASS_NAME_FORMAT
  * @param enableConfiguration Defaults to false. If set to `false`, the generator will not expose the module provider.
  * The SDK will then try to:
  * 1. Call an empty constructor of the annotated implementation class.
- * 2. Get a Kotlin `object` instance.
- * 3. Get class' instance using a static `getInstance` method.
+ * 2. Get a Kotlin `object` instance. **(make sure to prevent minification/obfuscation of the `object.INSTANCE` field)**
+ * 3. Get class' instance using a static `getInstance` method. **(make sure to prevent minification/obfuscation of the `getInstance` method)**
  * 4. Create the instance by injecting predefined Mapbox parameters. This is for internal and Mapbox default modules use only.
  *
  * If set to `true`, the SDK will generate a static provider, with class name equal to: [MODULE_CONFIGURATION_CLASS_NAME_FORMAT].

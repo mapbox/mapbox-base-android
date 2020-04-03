@@ -112,9 +112,9 @@ To make both Mapbox default module implementations and custom ones testable, and
 When `enableConfiguration = false`, the processor will not generate the configuration option in the resulting glue class. This results in the module provider trying to:
 
 1. instantiate the module by the public, no-arg constructor
-2. obtain the Kotlin `object` reference of the module implementation
-3. call a static, Java `getInstance` method
-4. call the constructor that accepts a list of default parameters, for Mapbox default modules internal usage only.
+2. obtain the Kotlin `object` reference of the module implementation **(make sure to prevent minification/obfuscation of the `object.INSTANCE` field)**
+3. call a static, Java `getInstance` method **(make sure to prevent minification/obfuscation of the `getInstance` method)**
+4. call the constructor that accepts a list of default parameters, for Mapbox default modules internal usage only **(Mapbox SDK needs to make sure to prevent minification/obfuscation of the desired constructor)**.
 
 ```
 @Keep
