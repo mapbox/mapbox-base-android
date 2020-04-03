@@ -59,6 +59,7 @@ object MapboxModuleProvider {
         val implClass =
           configurationClass.getMethod(MODULE_CONFIGURATION_DISABLED_CLASS.asGetterFun()).invoke(null) as Class<T>
 
+        val creationExceptions = mutableListOf<String>()
         var foundInstance: Any? = null
         for (creator in instanceCreators) {
           try {
@@ -66,12 +67,24 @@ object MapboxModuleProvider {
           } catch (ex: Exception) {
             if (ex is MapboxInvalidModuleException) {
               throw ex
+            } else {
+              creationExceptions.add(ex.toString())
             }
           }
           if (foundInstance != null) {
             break
           }
         }
+
+        if (foundInstance == null) {
+          val stream = System.err
+          synchronized(stream) {
+            creationExceptions.forEach {
+              stream.println(it)
+            }
+          }
+        }
+
         instance = foundInstance ?: throw MapboxInvalidModuleException(type)
       }
 
