@@ -174,7 +174,7 @@ override fun onCreate(savedInstanceState: Bundle?) {
 
 ### Usage
 
-Modules are critical for the SDK to function properly, therefore each Mapbox SDK always bundles all of the default implementations with the main artifact as runtime dependencies. A developer can not only swap each module's implementation for a custom one, but also avoid binary size increases taht would normally go with it, thanks to the modular architecture outlined above.
+Modules are critical for the SDK to function properly, therefore each Mapbox SDK always bundles all of the default implementations with the main artifact as runtime dependencies. A developer can not only swap each module's implementation for a custom one, but also avoid binary size increases that would normally go with it, thanks to the modular architecture outlined above.
 
 A Mapbox SDK will internally declare dependencies on base and default implementations:
 ```
