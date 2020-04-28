@@ -1,6 +1,7 @@
 package com.mapbox.common.logger
 
 import android.util.Log
+import androidx.annotation.Keep
 import com.mapbox.annotation.module.MapboxModule
 import com.mapbox.annotation.module.MapboxModuleType
 import com.mapbox.base.common.logger.Logger
@@ -14,6 +15,7 @@ import java.util.concurrent.atomic.AtomicReference
  * via [LoggerObserver].
  */
 @MapboxModule(MapboxModuleType.CommonLogger)
+@Keep
 object MapboxLogger : Logger {
 
   private const val DEFAULT_TAG = "MapboxLogger"
