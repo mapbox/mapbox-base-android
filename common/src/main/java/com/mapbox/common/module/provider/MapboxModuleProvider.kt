@@ -1,5 +1,6 @@
 package com.mapbox.common.module.provider
 
+import android.util.Log
 import com.mapbox.annotation.*
 import com.mapbox.annotation.module.MapboxModuleType
 
@@ -10,6 +11,8 @@ import com.mapbox.annotation.module.MapboxModuleType
  * [MODULARIZATION.md](https://github.com/mapbox/mapbox-base-android/blob/master/MODULARIZATION.md).
  */
 object MapboxModuleProvider {
+
+  private const val TAG = "MapboxModuleProvider"
 
   /**
    * Creates a module's instance given it's type and a default parameter provider.
@@ -59,7 +62,7 @@ object MapboxModuleProvider {
         val implClass =
           configurationClass.getMethod(MODULE_CONFIGURATION_DISABLED_CLASS.asGetterFun()).invoke(null) as Class<T>
 
-        val creationExceptions = mutableListOf<String>()
+        val creationExceptions = mutableListOf<Throwable>()
         var foundInstance: Any? = null
         for (creator in instanceCreators) {
           try {
@@ -68,7 +71,7 @@ object MapboxModuleProvider {
             if (ex is MapboxInvalidModuleException) {
               throw ex
             } else {
-              creationExceptions.add(ex.toString())
+              creationExceptions.add(ex)
             }
           }
           if (foundInstance != null) {
@@ -77,11 +80,8 @@ object MapboxModuleProvider {
         }
 
         if (foundInstance == null) {
-          val stream = System.err
-          synchronized(stream) {
-            creationExceptions.forEach {
-              stream.println(it)
-            }
+          creationExceptions.forEach {
+            Log.e(TAG, "Module loading failed", it)
           }
         }
 
