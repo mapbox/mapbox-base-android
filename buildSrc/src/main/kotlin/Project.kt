@@ -25,12 +25,12 @@ object Dependencies {
 }
 
 private object Versions {
-  const val tools = "3.5.2"
-  const val kotlin = "1.3.41"
+  const val tools = "3.6.2"
+  const val kotlin = "1.3.71"
   const val androidX = "1.1.0"
   const val license = "0.8.5"
   const val kotlinPoet = "1.3.0"
-  const val serviceProvider = "1.0-rc6"
+  const val serviceProvider = "1.0-rc7"
   const val dokka = "0.9.18"
   const val soloader = "0.8.0"
   const val bintray = "1.8.4"
