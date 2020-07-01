@@ -60,5 +60,5 @@ enum class MapboxModuleType(
   /**
    * Foreground service notification displayed when navigation's trip session is started.
    */
-  NavigationTripNotification("TripNotification", "com.mapbox.navigation.base.trip", "TripNotification")
+  NavigationTripNotification("TripNotification", "com.mapbox.navigation.base.trip.notification", "TripNotification")
 }
