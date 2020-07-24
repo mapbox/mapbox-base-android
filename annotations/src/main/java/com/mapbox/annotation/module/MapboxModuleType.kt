@@ -40,6 +40,13 @@ enum class MapboxModuleType(
    */
   CommonLogger("Logger", "com.mapbox.base.common.logger", "Logger"),
 
+  /* ----- MAP MODULES ----- */
+
+  /**
+   * Module used to dispatch map telemetry events.
+   */
+  MapTelemetry("MapTelemetry", "com.mapbox.maps.module", "MapTelemetry"),
+
   /* ----- NAVIGATION MODULES ----- */
 
   /**
