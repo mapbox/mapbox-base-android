@@ -75,6 +75,7 @@ class ModuleProviderTest {
       )
       MapboxModuleType.NavigationOnboardRouter -> arrayOf()
       MapboxModuleType.NavigationTripNotification -> TODO("not implemented")
+      MapboxModuleType.MapTelemetry -> TODO("not implemented")
     }
   }
 }
