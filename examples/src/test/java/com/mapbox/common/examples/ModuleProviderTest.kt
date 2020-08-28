@@ -5,6 +5,7 @@ import com.mapbox.annotation.module.MapboxModuleType
 import com.mapbox.common.module.LibraryLoader
 import com.mapbox.common.module.provider.MapboxInvalidModuleException
 import com.mapbox.common.module.provider.MapboxModuleProvider
+import com.mapbox.common.module.provider.ModuleProviderArgument
 import com.mapbox.module.Mapbox_OnboardRouterModuleConfiguration
 import com.mapbox.navigation.base.logger.Logger
 import com.mapbox.navigation.base.route.Router
@@ -60,18 +61,18 @@ class ModuleProviderTest {
     MapboxModuleProvider.createModule<Logger>(MapboxModuleType.CommonLogger, ::paramsProvider)
   }
 
-  private fun paramsProvider(type: MapboxModuleType): Array<Pair<Class<*>?, Any?>> {
+  private fun paramsProvider(type: MapboxModuleType): Array<ModuleProviderArgument> {
     return when (type) {
       MapboxModuleType.CommonLibraryLoader -> arrayOf()
       MapboxModuleType.CommonHttpClient -> TODO("not implemented")
       MapboxModuleType.CommonLogger -> arrayOf(
-        Router::class.java to MapboxModuleProvider.createModule(MapboxModuleType.NavigationTripNotification, ::paramsProvider)
+        ModuleProviderArgument(Router::class.java, MapboxModuleProvider.createModule(MapboxModuleType.NavigationTripNotification, ::paramsProvider))
       )
       MapboxModuleType.NavigationRouter -> arrayOf(
-        Router::class.java to MapboxModuleProvider.createModule(MapboxModuleType.NavigationOffboardRouter, ::paramsProvider)
+        ModuleProviderArgument(Router::class.java, MapboxModuleProvider.createModule(MapboxModuleType.NavigationOffboardRouter, ::paramsProvider))
       )
       MapboxModuleType.NavigationOffboardRouter -> arrayOf(
-        Context::class.java to mockk<Context>()
+        ModuleProviderArgument(Context::class.java, mockk<Context>())
       )
       MapboxModuleType.NavigationOnboardRouter -> arrayOf()
       MapboxModuleType.NavigationTripNotification -> TODO("not implemented")
