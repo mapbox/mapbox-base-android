@@ -50,19 +50,9 @@ enum class MapboxModuleType(
   /* ----- NAVIGATION MODULES ----- */
 
   /**
-   * Main router used by the Navigation SDK. The default implementation combines [NavigationOffboardRouter] and [NavigationOnboardRouter] to provide the best available route.
+   * Main router used by the Navigation SDK.
    */
   NavigationRouter("Router", "com.mapbox.navigation.base.route", "Router"),
-
-  /**
-   * If [NavigationRouter] is used, this provides the online routing capabilities.
-   */
-  NavigationOffboardRouter("OffboardRouter", "com.mapbox.navigation.base.route", "Router"),
-
-  /**
-   * If [NavigationRouter] is used, this provides the offline routing capabilities.
-   */
-  NavigationOnboardRouter("OnboardRouter", "com.mapbox.navigation.base.route", "Router"),
 
   /**
    * Foreground service notification displayed when navigation's trip session is started.

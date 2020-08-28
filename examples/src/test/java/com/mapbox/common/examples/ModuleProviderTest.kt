@@ -1,15 +1,15 @@
 package com.mapbox.common.examples
 
-import android.content.Context
 import com.mapbox.annotation.module.MapboxModuleType
+import com.mapbox.base.common.logger.Logger
 import com.mapbox.common.module.LibraryLoader
 import com.mapbox.common.module.provider.MapboxInvalidModuleException
 import com.mapbox.common.module.provider.MapboxModuleProvider
 import com.mapbox.common.module.provider.ModuleProviderArgument
-import com.mapbox.module.Mapbox_OnboardRouterModuleConfiguration
-import com.mapbox.navigation.base.logger.Logger
+import com.mapbox.maps.module.MapTelemetry
+import com.mapbox.module.Mapbox_MapTelemetryModuleConfiguration
 import com.mapbox.navigation.base.route.Router
-import com.mapbox.navigation.base.trip.TripNotification
+import com.mapbox.navigation.base.trip.notification.TripNotification
 import io.mockk.mockk
 import org.hamcrest.core.IsEqual
 import org.junit.Assert.assertNotNull
@@ -30,8 +30,8 @@ class ModuleProviderTest {
 
   @Test
   fun normal_dependencies() {
-    val offboardRouter: Router = MapboxModuleProvider.createModule(MapboxModuleType.NavigationOffboardRouter, ::paramsProvider)
-    assertNotNull(offboardRouter)
+    val logger: Logger = MapboxModuleProvider.createModule(MapboxModuleType.CommonLogger, ::paramsProvider2)
+    assertNotNull(logger)
   }
 
   @Test
@@ -42,11 +42,11 @@ class ModuleProviderTest {
 
   @Test
   fun generate_configuration() {
-    Mapbox_OnboardRouterModuleConfiguration.moduleProvider = object : Mapbox_OnboardRouterModuleConfiguration.ModuleProvider {
-      override fun createOnboardRouter(): Router = MyOnboardRouter(mockk())
+    Mapbox_MapTelemetryModuleConfiguration.moduleProvider = object : Mapbox_MapTelemetryModuleConfiguration.ModuleProvider {
+      override fun createMapTelemetry(): MapTelemetry = MyMapTelemetry()
     }
-    val onboardRouter: Router = MapboxModuleProvider.createModule(MapboxModuleType.NavigationOnboardRouter, ::paramsProvider)
-    assertNotNull(onboardRouter)
+    val mapTelemetry: MapTelemetry = MapboxModuleProvider.createModule(MapboxModuleType.MapTelemetry, ::paramsProvider)
+    assertNotNull(mapTelemetry)
   }
 
   @Test
@@ -66,17 +66,22 @@ class ModuleProviderTest {
       MapboxModuleType.CommonLibraryLoader -> arrayOf()
       MapboxModuleType.CommonHttpClient -> TODO("not implemented")
       MapboxModuleType.CommonLogger -> arrayOf(
-        ModuleProviderArgument(Router::class.java, MapboxModuleProvider.createModule(MapboxModuleType.NavigationTripNotification, ::paramsProvider))
+        ModuleProviderArgument(TripNotification::class.java, MapboxModuleProvider.createModule(MapboxModuleType.NavigationTripNotification, ::paramsProvider))
       )
       MapboxModuleType.NavigationRouter -> arrayOf(
-        ModuleProviderArgument(Router::class.java, MapboxModuleProvider.createModule(MapboxModuleType.NavigationOffboardRouter, ::paramsProvider))
+        ModuleProviderArgument(LibraryLoader::class.java, MapboxModuleProvider.createModule(MapboxModuleType.CommonLibraryLoader, ::paramsProvider))
       )
-      MapboxModuleType.NavigationOffboardRouter -> arrayOf(
-        ModuleProviderArgument(Context::class.java, mockk<Context>())
+      MapboxModuleType.NavigationTripNotification -> arrayOf()
+      MapboxModuleType.MapTelemetry -> arrayOf()
+    }
+  }
+
+  private fun paramsProvider2(type: MapboxModuleType): Array<ModuleProviderArgument> {
+    return when (type) {
+      MapboxModuleType.CommonLogger -> arrayOf(
+        ModuleProviderArgument(TripNotification::class.java, mockk<TripNotification>())
       )
-      MapboxModuleType.NavigationOnboardRouter -> arrayOf()
-      MapboxModuleType.NavigationTripNotification -> TODO("not implemented")
-      MapboxModuleType.MapTelemetry -> TODO("not implemented")
+      else -> throw RuntimeException()
     }
   }
 }
