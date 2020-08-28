@@ -38,7 +38,7 @@ private object Versions {
   const val artifactory = "4.9.3"
   const val mockk = "1.9.3"
   const val junit = "1.1.1"
-  const val navigationBase = "1.0.0-beta.1"
+  const val navigationBase = "1.0.0-rc.6"
 }
 
 object ArtifactSettings {
