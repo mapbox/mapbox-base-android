@@ -1,7 +1,7 @@
 object AndroidVersions {
   const val minSdkVersion = 19
-  const val targetSdkVersion = 28
-  const val compileSdkVersion = 28
+  const val targetSdkVersion = 29
+  const val compileSdkVersion = 29
 }
 
 object Plugins {
@@ -25,19 +25,18 @@ object Dependencies {
 }
 
 private object Versions {
-  const val tools = "3.6.2"
-  const val kotlin = "1.3.71"
+  const val tools = "4.0.1"
+  const val kotlin = "1.4.10"
   const val androidX = "1.1.0"
   const val license = "0.8.5"
-  const val kotlinPoet = "1.3.0"
+  const val kotlinPoet = "1.6.0"
   const val serviceProvider = "1.0-rc7"
   const val dokka = "0.9.18"
-  const val soloader = "0.8.0"
   const val bintray = "1.8.4"
   const val androidPublish = "3.6.2"
-  const val artifactory = "4.9.3"
-  const val mockk = "1.9.3"
-  const val junit = "1.1.1"
+  const val artifactory = "4.17.2"
+  const val mockk = "1.10.0"
+  const val junit = "1.1.2"
   const val navigationBase = "1.0.0-rc.6"
 }
 
