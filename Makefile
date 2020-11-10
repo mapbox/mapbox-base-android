@@ -9,14 +9,16 @@ buildDebug:
 	./gradlew annotations:assemble && \
     ./gradlew annotations-processor:assemble && \
     ./gradlew common:assembleDebug && \
-    ./gradlew liblogger:assembleDebug
+    ./gradlew liblogger:assembleDebug && \
+    ./gradlew libloader:assembleDebug
 
 .PHONY: buildRelease
 buildRelease:
 	./gradlew annotations:assemble && \
     ./gradlew annotations-processor:assemble && \
     ./gradlew common:assembleRelease && \
-    ./gradlew liblogger:assembleRelease
+    ./gradlew liblogger:assembleRelease && \
+    ./gradlew libloader:assembleRelease
 
 .PHONY: bintrayPublish
 bintrayPublish:
@@ -24,6 +26,7 @@ bintrayPublish:
 	./gradlew :annotations-processor:bintrayUpload ; \
 	./gradlew :common:bintrayUpload ; \
 	./gradlew :liblogger:bintrayUpload ; \
+	./gradlew :libloader:bintrayUpload ; \
 
 .PHONY: artifactoryPublish
 artifactoryPublish:
@@ -31,6 +34,7 @@ artifactoryPublish:
 	./gradlew :annotations-processor:artifactoryPublish ; \
 	./gradlew :common:artifactoryPublish ; \
 	./gradlew :liblogger:artifactoryPublish ; \
+	./gradlew :libloader:artifactoryPublish ; \
 
 .PHONY: runUnitTests
 runUnitTests:
