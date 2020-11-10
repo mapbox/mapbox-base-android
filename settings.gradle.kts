@@ -1,2 +1,2 @@
-include(":common", ":annotations", ":annotations-processor", ":liblogger", ":examples")
+include(":common", ":annotations", ":annotations-processor", ":liblogger", ":libloader", ":examples")
 rootProject.name = "Mapbox Base Android"
