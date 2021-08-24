@@ -47,7 +47,7 @@ import com.mapbox.annotation.MODULE_CONFIGURATION_CLASS_NAME_FORMAT
  * compileOnly(com.mapbox.base:annotations:0.1.0)
  * kapt("com.mapbox.base:annotations-processor:0.1.0")
  * implementation (com.mapbox.navigation:core:1.0.0) {
- *   exclude group: "com.mapbox.common", module: "library-loader"
+ *   exclude group: "com.mapbox.common", module: "loader"
  * }
  * ```
  *
