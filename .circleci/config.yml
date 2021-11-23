@@ -1,4 +1,13 @@
 version: 2.1
+
+executors:
+  ndk-r21e-latest-executor:
+    docker:
+      - image: mbgl/android-ndk-r21e:latest
+    working_directory: ~/code
+    environment:
+      MBX_CI_DOMAIN: o619qyc20d.execute-api.us-east-1.amazonaws.com
+
 commands:
   restore-gradle-cache:
     steps:
@@ -13,6 +22,15 @@ commands:
           paths:
             - ~/.gradle
           key: v1-dependencies-{{ checksum "build.gradle.kts" }}-{{ checksum "annotations/build.gradle.kts" }}-{{ checksum "annotations-processor/build.gradle.kts" }}-{{ checksum "common/build.gradle.kts" }}-{{ checksum "liblogger/build.gradle.kts" }}
+
+  install-mbx-ci:
+    steps:
+      - run:
+          name: Install mbx-ci
+          command: |
+            curl -Ls https://mapbox-release-engineering.s3.amazonaws.com/mbx-ci/latest/mbx-ci-linux-amd64 > mbx-ci
+            chmod 755 ./mbx-ci
+            ./mbx-ci aws setup
 
   run-unit-tests:
     steps:
@@ -50,41 +68,22 @@ commands:
           name: Build libraries for debug
           command: make buildDebug
 
-  update-version-name:
-    steps:
-      - run:
-          name: Update version name
-          command: |
-            if [[ $CIRCLE_TAG == v* ]]; then
-              sed -i -e "s/^VERSION_NAME=.*/VERSION_NAME=${CIRCLE_TAG:1}/" gradle.properties
-            fi
-
   publish:
     steps:
-      - run:
-          name: Generate Bintray credentials
-          command: |
-            if [ -n "${BINTRAY_USER}" ]; then
-              echo "BINTRAY_USER=$BINTRAY_USER
-              BINTRAY_API_KEY=$BINTRAY_API_KEY
-              GPG_PASSPHRASE=$GPG_PASSPHRASE"
-            fi
       - deploy:
-          name: Publish Base SDK artifacts to Bintray
+          name: Publish Base SDK artifacts to SDK Registry
           command: |
-            if [[ $CIRCLE_BRANCH == master ]] || [[ $CIRCLE_TAG == v* ]]; then
-              version=$(cat gradle.properties | grep "VERSION_NAME")
-              if [[ $version != *"SNAPSHOT"* ]]; then
-                make bintrayPublish
-              else
-                make artifactoryPublish
-              fi
+            version=$(cat gradle.properties | grep "VERSION_NAME")
+            if [[ $CIRCLE_BRANCH == master && $version == *"SNAPSHOT"* ]]; then
+              make sdkRegistryPublish
+            elif [[ $CIRCLE_TAG == v* ]]; then
+              sed -i -e "s/^VERSION_NAME=.*/VERSION_NAME=${CIRCLE_TAG:1}/" gradle.properties
+              make sdkRegistryPublish
             fi
 
 jobs:
   verify-code:
-    docker:
-      - image: mbgl/android-ndk-r21b:latest
+    executor: ndk-r21e-latest-executor
     steps:
       - checkout
       - restore-gradle-cache
@@ -94,28 +93,25 @@ jobs:
       - validate-dokka-docs
 
   build-release:
-    docker:
-      - image: mbgl/android-ndk-r21b:latest
+    executor: ndk-r21e-latest-executor
     steps:
       - checkout
       - restore-gradle-cache
       - build-release-libraries
 
   build-debug:
-    docker:
-      - image: mbgl/android-ndk-r21b:latest
+    executor: ndk-r21e-latest-executor
     steps:
       - checkout
       - restore-gradle-cache
       - build-debug-libraries
 
   release:
-    docker:
-      - image: mbgl/android-ndk-r21b:latest
+    executor: ndk-r21e-latest-executor
     steps:
       - checkout
       - restore-gradle-cache
-      - update-version-name
+      - install-mbx-ci
       - build-release-libraries
       - publish
 

@@ -15,5 +15,5 @@ dependencies {
 project.apply {
   from("$rootDir/gradle/ktlint.gradle")
   from("$rootDir/gradle/java-artifacts.gradle")
-  from("$rootDir/gradle/bintray-publish.gradle")
+  from("$rootDir/gradle/sdk-registry-publish.gradle")
 }
