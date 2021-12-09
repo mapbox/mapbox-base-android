@@ -20,21 +20,13 @@ buildRelease:
     ./gradlew liblogger:assembleRelease && \
     ./gradlew libloader:assembleRelease
 
-.PHONY: bintrayPublish
-bintrayPublish:
-	./gradlew :annotations:bintrayUpload ; \
-	./gradlew :annotations-processor:bintrayUpload ; \
-	./gradlew :common:bintrayUpload ; \
-	./gradlew :liblogger:bintrayUpload ; \
-	./gradlew :libloader:bintrayUpload ; \
-
-.PHONY: artifactoryPublish
-artifactoryPublish:
-	./gradlew :annotations:artifactoryPublish ; \
-	./gradlew :annotations-processor:artifactoryPublish ; \
-	./gradlew :common:artifactoryPublish ; \
-	./gradlew :liblogger:artifactoryPublish ; \
-	./gradlew :libloader:artifactoryPublish ; \
+.PHONY: sdkRegistryPublish
+sdkRegistryPublish:
+	./gradlew :annotations:mapboxSDKRegistryUpload ; \
+	./gradlew :annotations-processor:mapboxSDKRegistryUpload ; \
+	./gradlew :common:mapboxSDKRegistryUpload ; \
+	./gradlew :liblogger:mapboxSDKRegistryUpload ; \
+	./gradlew :libloader:mapboxSDKRegistryUpload ; \
 
 .PHONY: runUnitTests
 runUnitTests:
