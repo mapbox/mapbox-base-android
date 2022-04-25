@@ -25,7 +25,7 @@ object MapboxLogger : Logger {
    */
   @LogLevel
   @Volatile
-  var logLevel: Int = ERROR
+  var logLevel: Int = VERBOSE
 
   /**
    * [LoggerObserver] for observe any log events
