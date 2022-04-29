@@ -14,6 +14,12 @@ android {
     targetSdkVersion(AndroidVersions.targetSdkVersion)
     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
   }
+
+  kotlinOptions {
+    freeCompilerArgs = listOf(
+      "-Xno-optimized-callable-references"
+    )
+  }
 }
 
 dependencies {

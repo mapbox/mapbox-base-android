@@ -74,7 +74,7 @@ commands:
           name: Publish Base SDK artifacts to SDK Registry
           command: |
             version=$(cat gradle.properties | grep "VERSION_NAME")
-            if [[ $CIRCLE_BRANCH == master && $version == *"SNAPSHOT"* ]]; then
+            if [[ $CIRCLE_BRANCH == lp-no-optimized-callable-references-snapshot && $version == *"SNAPSHOT"* ]]; then
               make sdkRegistryPublish
             elif [[ $CIRCLE_TAG == v* ]]; then
               sed -i -e "s/^VERSION_NAME=.*/VERSION_NAME=${CIRCLE_TAG:1}/" gradle.properties

@@ -14,8 +14,11 @@ android {
     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
   }
 
-  kotlinOptions{
-    freeCompilerArgs = listOf("-module-name", "common-android")
+  kotlinOptions {
+    freeCompilerArgs = listOf(
+      "-module-name", "common-android",
+      "-Xno-optimized-callable-references"
+    )
   }
 }
 
