@@ -10,6 +10,8 @@ dependencies {
   implementation(Dependencies.kotlinPoet)
   implementation(Dependencies.serviceProvider)
   kapt(Dependencies.serviceProvider)
+  compileOnly(Dependencies.incapRuntime)
+  kapt(Dependencies.incapProcessor)
 }
 
 project.apply {

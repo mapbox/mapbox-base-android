@@ -20,9 +20,12 @@ object Dependencies {
   const val mockk = "io.mockk:mockk:${Versions.mockk}"
   const val junit = "androidx.test.ext:junit:${Versions.junit}"
   const val navigationBase = "com.mapbox.navigation:base:${Versions.navigationBase}"
+  const val incapRuntime = "net.ltgt.gradle.incap:incap:${Versions.incap}"
+  const val incapProcessor = "net.ltgt.gradle.incap:incap-processor:${Versions.incap}"
 }
 
 private object Versions {
+  const val incap = "0.3"
   const val tools = "4.1.3"
   const val kotlin = "1.4.10"
   const val androidX = "1.1.0"
