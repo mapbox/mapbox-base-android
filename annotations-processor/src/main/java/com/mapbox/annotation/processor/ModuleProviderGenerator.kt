@@ -14,6 +14,8 @@ import javax.annotation.processing.RoundEnvironment
 import javax.annotation.processing.SupportedOptions
 import javax.lang.model.SourceVersion
 import javax.lang.model.element.TypeElement
+import net.ltgt.gradle.incap.IncrementalAnnotationProcessor
+import net.ltgt.gradle.incap.IncrementalAnnotationProcessorType
 
 /**
  * For additional documentation and examples, see
@@ -21,6 +23,7 @@ import javax.lang.model.element.TypeElement
  */
 @SupportedOptions(ModuleProviderGenerator.KAPT_KOTLIN_GENERATED_OPTION_NAME)
 @AutoService(Processor::class)
+@IncrementalAnnotationProcessor(IncrementalAnnotationProcessorType.ISOLATING)
 internal class ModuleProviderGenerator : AbstractProcessor() {
 
   override fun getSupportedSourceVersion(): SourceVersion {
