@@ -9,8 +9,8 @@ ext {
     mapboxArtifactUrl = 'https://github.com/mapbox/mapbox-base-android'
     mapboxArtifactVcsUrl = 'https://github.com/mapbox/mapbox-base-android.git'
     mapboxArtifactScmUrl = 'scm:git@github.com:mapbox/mapbox-base-android.git'
-    mapboxArtifactLicenseName = 'BSD'
-    mapboxArtifactLicenseUrl = 'https://opensource.org/licenses/BSD-2-Clause'
+    mapboxArtifactLicenseName = 'Mapbox Terms of Service'
+    mapboxArtifactLicenseUrl = 'https://www.mapbox.com/legal/tos/'
 
     versionName = project.property('VERSION_NAME')
 
