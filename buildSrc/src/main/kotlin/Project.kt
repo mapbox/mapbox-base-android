@@ -46,6 +46,6 @@ object ArtifactSettings {
   const val artifactUrl = "https://github.com/mapbox/mapbox-base-android"
   const val artifactVcsUrl = "https://github.com/mapbox/mapbox-base-android.git"
   const val artifactScmUrl = "scm:git@github.com:mapbox/mapbox-base-android.git"
-  const val artifactLicenseName = "BSD"
-  const val artifactLicenseUrl = "https://opensource.org/licenses/BSD-2-Clause"
+  const val artifactLicenseName = "Mapbox Terms of Service"
+  const val artifactLicenseUrl = "https://www.mapbox.com/legal/tos/"
 }

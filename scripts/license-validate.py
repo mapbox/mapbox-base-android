@@ -15,4 +15,4 @@ if b"LICENSE.md" in output:
             but weren't commited. Run python scripts/license-generate.py and 
             commit the changeset to make this validation pass.""")
 else:
-   print "License file is up to date"
+   print("License file is up to date")

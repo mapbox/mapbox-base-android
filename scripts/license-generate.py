@@ -10,6 +10,18 @@ path = os.getcwd()
 try:
     with open(path + "/LICENSE.md", 'w+') as licenseFile:
         licenseFile.write("<!-- This file was generated. Use `python scripts/license-generate.py`to update. -->  \n")
+        licenseFile.write("### License\n")
+        licenseFile.write("\n")
+        licenseFile.write("Mapbox Base SDK for Android\n")
+        licenseFile.write("\n")
+        licenseFile.write("Copyright &copy; 2021 Mapbox\n")
+        licenseFile.write("\n")
+        licenseFile.write("All rights reserved.\n")
+        licenseFile.write("\n")
+        licenseFile.write("Mapbox Base SDK for Android must be used according to the Mapbox Terms of Service. This license allows developers with a current active Mapbox account to use and modify the Mapbox Maps Android SDK. Developers may modify the Mapbox Maps Android SDK code so long as the modifications do not change or interfere with marked portions of the code related to billing, accounting, and anonymized data collection. The Mapbox Maps Android SDK sends anonymized location and usage data, which Mapbox uses for fixing bugs and errors, accounting, and generating aggregated anonymized statistics. This license terminates automatically if a user no longer has an active Mapbox account.\n")
+        licenseFile.write("\n")
+        licenseFile.write("For the full license terms, please see the Mapbox Terms of Service at https://www.mapbox.com/legal/tos/\n")
+        licenseFile.write("\n")
         licenseFile.write("## Additional Mapbox Base Android licenses\n")
         with open(path + "/common/build/reports/licenses/licenseReport.json", 'r') as dataFile:
             data = json.load(dataFile)
@@ -40,8 +52,8 @@ try:
                                   "License: [%s](%s)" % (licenseName, licenseUrl) +
                                   "\n\n===========================================================================\n\n")
     licenseFile.close()
-except IOError as (errno,strerror):
-    print "I/O error({0}): {1}".format(errno, strerror)
+except IOError as err:
+    print("I/O error({0}): {1}".format(err.errno, err.strerror))
 
 # remove obsolete open_source_licenses.html
 # os.system("rm -f common/src/main/assets/open_source_licenses.html")
