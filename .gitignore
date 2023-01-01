@@ -5,4 +5,4 @@
 .DS_Store
 /captures
 **/build
-/.idea
+/.idea.git/
