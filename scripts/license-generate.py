@@ -1,6 +1,7 @@
 #!/usr/bin/python
 import json
 import os
+import datetime
 
 # run gradle license generation
 os.system("./gradlew common:licenseReleaseReport")
@@ -8,19 +9,16 @@ os.system("./gradlew common:licenseReleaseReport")
 # convert output to LICENSE.md file
 path = os.getcwd()
 try:
+    now = datetime.datetime.now()
     with open(path + "/LICENSE.md", 'w+') as licenseFile:
         licenseFile.write("<!-- This file was generated. Use `python scripts/license-generate.py`to update. -->  \n")
         licenseFile.write("### License\n")
         licenseFile.write("\n")
         licenseFile.write("Mapbox Base SDK for Android\n")
         licenseFile.write("\n")
-        licenseFile.write("Copyright &copy; 2021 Mapbox\n")
+        licenseFile.write("Copyright &copy; 2021 - {} Mapbox, Inc. All rights reserved.\n".format(now.year))
         licenseFile.write("\n")
-        licenseFile.write("All rights reserved.\n")
-        licenseFile.write("\n")
-        licenseFile.write("Mapbox Base SDK for Android must be used according to the Mapbox Terms of Service. This license allows developers with a current active Mapbox account to use and modify the Mapbox Maps Android SDK. Developers may modify the Mapbox Maps Android SDK code so long as the modifications do not change or interfere with marked portions of the code related to billing, accounting, and anonymized data collection. The Mapbox Maps Android SDK sends anonymized location and usage data, which Mapbox uses for fixing bugs and errors, accounting, and generating aggregated anonymized statistics. This license terminates automatically if a user no longer has an active Mapbox account.\n")
-        licenseFile.write("\n")
-        licenseFile.write("For the full license terms, please see the Mapbox Terms of Service at https://www.mapbox.com/legal/tos/\n")
+        licenseFile.write("The software and files in this repository (collectively, “Software”) are licensed under the Mapbox TOS for use only with the relevant Mapbox product(s) listed at www.mapbox.com/pricing. This license allows developers with a current active Mapbox account to use and modify the authorized portions of the Software as needed for use only with the relevant Mapbox product(s) through their Mapbox account in accordance with the Mapbox TOS.  This license terminates automatically if a developer no longer has a Mapbox account in good standing or breaches the Mapbox TOS. For the license terms, please see the Mapbox TOS at https://www.mapbox.com/legal/tos/ which incorporates the Mapbox Product Terms at www.mapbox.com/legal/service-terms.  If this Software is a SDK, modifications that change or interfere with marked portions of the code related to billing, accounting, or data collection are not authorized and the SDK sends limited de-identified location and usage data which is used in accordance with the Mapbox TOS. [Updated {}-{:02d}]\n".format(now.year, now.month))
         licenseFile.write("\n")
         licenseFile.write("## Additional Mapbox Base Android licenses\n")
         with open(path + "/common/build/reports/licenses/licenseReport.json", 'r') as dataFile:
