@@ -8,7 +8,6 @@ import com.mapbox.common.module.provider.MapboxModuleProvider
 import com.mapbox.common.module.provider.ModuleProviderArgument
 import com.mapbox.maps.module.MapTelemetry
 import com.mapbox.module.Mapbox_MapTelemetryModuleConfiguration
-import com.mapbox.navigation.base.route.Router
 import com.mapbox.navigation.base.trip.notification.TripNotification
 import io.mockk.mockk
 import org.hamcrest.core.IsEqual
@@ -32,12 +31,6 @@ class ModuleProviderTest {
   fun normal_dependencies() {
     val logger: Logger = MapboxModuleProvider.createModule(MapboxModuleType.CommonLogger, ::paramsProvider2)
     assertNotNull(logger)
-  }
-
-  @Test
-  fun nested_module_dependencies() {
-    val router: Router = MapboxModuleProvider.createModule(MapboxModuleType.NavigationRouter, ::paramsProvider)
-    assertNotNull(router)
   }
 
   @Test
