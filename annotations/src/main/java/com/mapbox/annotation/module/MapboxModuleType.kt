@@ -50,12 +50,6 @@ enum class MapboxModuleType(
   /* ----- NAVIGATION MODULES ----- */
 
   /**
-   * Main router used by the Navigation SDK.
-   */
-  @Deprecated("Core Navigation Framework doesn't use a custom router implementation so it will not overwrite the built-in router in Core Navigation Framework anymore")
-  NavigationRouter("Router", "com.mapbox.navigation.base.route", "Router"),
-
-  /**
    * Foreground service notification displayed when navigation's trip session is started.
    */
   NavigationTripNotification("TripNotification", "com.mapbox.navigation.base.trip.notification", "TripNotification")
