@@ -61,9 +61,6 @@ class ModuleProviderTest {
       MapboxModuleType.CommonLogger -> arrayOf(
         ModuleProviderArgument(TripNotification::class.java, MapboxModuleProvider.createModule(MapboxModuleType.NavigationTripNotification, ::paramsProvider))
       )
-      MapboxModuleType.NavigationRouter -> arrayOf(
-        ModuleProviderArgument(LibraryLoader::class.java, MapboxModuleProvider.createModule(MapboxModuleType.CommonLibraryLoader, ::paramsProvider))
-      )
       MapboxModuleType.NavigationTripNotification -> arrayOf()
       MapboxModuleType.MapTelemetry -> arrayOf()
     }
