@@ -3,7 +3,7 @@ This document outlines the build system modularization vision, architecture, and
 ## Why
 We are introducing build system modularization to enable customization of Mapbox SDKs with minimal binary size overhead and to increase the overall separation of responsibilities across SDKs. The goal is to enable swapping SDK modules during compilation instead of exposing runtime configuration options and relying on third-party tools to remove unused code.
 
-We streamline independent units of code as much as possible into SDK modules, described by transparent contracts (interfaces). For example, Mapbox SDKs typically have a networking module where the default implementation is OkHttp. The developer can replace the default implementation with a custom implementation without resulting in the SDK bundling unnecessary code, i.e., code for the default implementation is removed.
+We streamline independent units of code as much as possible into SDK modules, described by transparent contracts (interfaces). For example, Mapbox SDKs typically have a native lib loading module with its default implementation. The developer can replace the default implementation with a custom implementation without resulting in the SDK bundling unnecessary code, i.e., code for the default implementation is removed.
 
 ## How
 _Disclaimer: all code examples in this doc are only examples. The actual names and implementation details of modules may differ._
@@ -22,33 +22,15 @@ All SDK-specific contracts currently live in the respective Maps and Navigation 
 For the network stack example, the SDK's only requirement is to schedule the request, wait for the callback, and cancel the request if necessary. We can describe that with the contract below:
 
 ```
-interface HttpClient {
+/**
+ * Library loader definition.
+ */
+interface LibraryLoader {
 
   /**
-   * Executes the request.
+   * Load native library given a library name.
    */
-  fun executeRequest(id: Long, resourceUrl: String, callback: HttpRequestCallback)
-
-  /**
-   * Cancels the request.
-   */
-  fun cancelRequest(id: Long)
-
-  /**
-   * Interface definition for delivering http request result.
-   */
-  interface HttpRequestCallback {
-
-    /**
-     * Delivers successful response's data.
-     */
-    fun onSuccess(data: ByteArray)
-
-    /**
-     * Delivers failure reason.
-     */
-    fun onFailure(reason: String)
-  }
+  fun load(libraryName: String)
 }
 ```
 
@@ -57,28 +39,13 @@ This contract will be shipped in an independent artifact that bundles several su
 ### Module implementations
 Implementing a module means providing the details and logic of how the contract should be executed:
 ```
-class HttpClientImpl(private val okHttpClient: OkHttpClient) : HttpClient, HttpClient.HttpRequestCallback {
+object MapboxLibraryLoader : LibraryLoader {
 
-  override fun executeRequest(id: Long, resourceUrl: String, callback: HttpClient.HttpRequestCallback) {
-    val request = okhttp3.Request.Builder().url(resourceUrl).build()
-    val call = okHttpClient.newCall(request).apply {
-      enqueue(this@HttpClientImpl)
-    }
-    requests.add(Request(id, call, callback))
-  }
-
-  override fun cancelRequest(id: Long) {
-    ...
-  }
-
-  override fun onFailure(call: Call, e: IOException) {
-    ...
-    httpRequestCallback.onFailure("")
-  }
-
-  override fun onResponse(call: Call, response: Response) {
-    ...
-    httpRequestCallback.onSuccess(byteArrayOf())
+  /**
+   * Load native library given a library name.
+   */
+  override fun load(libraryName: String) {
+    System.loadLibrary(libraryName)
   }
 }
 ```
@@ -87,9 +54,19 @@ This class can live anywhere in the project or dependency tree, but it has to be
 ### Module annotations
 To limit erroneous runtime configurations and simplify the configuration, it’s required to annotate a module implementation with the appropriate annotation from the `com.mapbox.base:annotations` artifact found in [this package](https://github.com/mapbox/mapbox-base-android/tree/master/annotations/src/main/java/com/mapbox/annotation):
 ```
-@MapboxModule(MapboxModuleType.HttpClient)
-class HttpClientImpl(private val okHttpClient: OkHttpClient) : HttpClient, Callback {
-  ...
+/**
+ * Mapbox implementation of [LibraryLoader] interface to load native libraries.
+ */
+@MapboxModule(MapboxModuleType.CommonLibraryLoader)
+@Keep
+object MapboxLibraryLoader : LibraryLoader {
+
+  /**
+   * Load native library given a library name.
+   */
+  override fun load(libraryName: String) {
+    System.loadLibrary(libraryName)
+  }
 }
 ```
 This project also ships an [annotations processor](https://github.com/mapbox/mapbox-base-android/tree/master/annotations-processor) which consumes module annotations and generates the glue classes in constant packages.
@@ -99,15 +76,15 @@ The [`MapboxModuleProvider`](https://github.com/mapbox/mapbox-base-android/blob/
 
 The module provider always takes as parameters the module type (referenced from the implementation class annotation). It also takes a list of arguments required to instantiate/acquire the default, Mapbox provided module implementation, but this is designed for internal usage only.
 
-For the network stack example, since the default `HttpClientImpl` requires an `OkHttpClient` instance, from a high-level perspective the SDK needs to invoke:
+For the native library loader example, since the default `MapboxLibraryLoader` requires no dependencies and is in fact an `object` singleton, from a high-level perspective the SDK needs to invoke:
 ```
-ModuleProvider.getModule(MapboxModuleType.HttpClient, OkHttpClient::class.java to myOkHttpClientInstance)
+MapboxModuleProvider.createModule(MapboxModuleType.CommonLibraryLoader, arrayOf())
 ```
 
 #### Dependency injection
 To make both Mapbox default module implementations and custom ones testable, and allow for singleton instances that could be reused across multiple Mapbox SDKs, the annotation processor offers 2 variants of the generated glue class. The variants are distinguished by the `enableConfiguration` flag passed through the module annotation argument, next to the module type:
 ```
-@MapboxModule(MapboxModuleType.HttpClient, enableConfiguration = true/false)
+@MapboxModule(MapboxModuleType.CommonLibraryLoader, enableConfiguration = true/false)
 ```
 When `enableConfiguration = false`, the processor will not generate the configuration option in the resulting glue class. This results in the module provider trying to:
 
@@ -118,12 +95,12 @@ When `enableConfiguration = false`, the processor will not generate the configur
 
 ```
 @Keep
-object Mapbox_HttpClientModuleConfiguration {
+object Mapbox_LibraryLoaderModuleConfiguration {
   @JvmStatic
   val enableConfiguration: Boolean = false
 
   @JvmStatic
-  val implClass: Class<HttpClientImpl> = HttpClientImpl::class.java
+  val implClass: Class<MapboxLibraryLoader> = MapboxLibraryLoader::class.java
 }
 ```
 
@@ -135,7 +112,7 @@ By default, configuration is disabled, `enableConfiguration = false`. A develope
 
 ```
 @Keep
-object Mapbox_HttpClientModuleConfiguration {
+object Mapbox_LibraryLoaderModuleConfiguration {
   @JvmStatic
   val enableConfiguration: Boolean = true
 
@@ -149,7 +126,7 @@ object Mapbox_HttpClientModuleConfiguration {
   var moduleProvider: ModuleProvider? = null
 
   interface ModuleProvider {
-    fun createHttpClient(): HttpClient
+    fun createLibraryLoader(): LibraryLoader
   }
 }
 ```
@@ -160,9 +137,9 @@ The configuration from a developer's perspective looks like the following:
 override fun onCreate(savedInstanceState: Bundle?) {
   super.onCreate(savedInstanceState)
 
-  Mapbox_HttpClientModuleConfiguration.moduleProvider =
-    object : Mapbox_HttpClientModuleConfiguration.ModuleProvider {
-      override fun createHttpClient(): HttpClient = HttpClientImpl(myOkHttpClient)
+  Mapbox_LibraryLoaderModuleConfiguration.moduleProvider =
+    object : Mapbox_LibraryLoaderModuleConfiguration.ModuleProvider {
+      override fun createLibraryLoader(): LibraryLoader = MyLibraryLoader(myInjectedDependency)
     }
 
   setContentView(R.layout.activity_simple_map)
@@ -180,25 +157,25 @@ A Mapbox SDK will internally declare dependencies on base and default implementa
 ```
 implementation("com.mapbox.base:android-annotations:0.1.0")
 implementation("com.mapbox.base:common:0.1.0")
-runtimeOnly("com.mapbox.module-http-client:0.1.0")
+runtimeOnly("com.mapbox.default-library-loader:0.1.0")
 ```
 which will allow it to use the functionality, regardless of the runtime implementation details:
 ```
-val httpClient: HttpClient = MapboxModuleProvider.createModule(MapboxModuleType.CommonHttpClient, ::defaultParamsProvider)
-httpClient.executeRequest(id, resourceUrl, callback)
+val libraryLoader: LibraryLoader = MapboxModuleProvider.createModule(MapboxModuleType.CommonLibraryLoader, ::defaultParamsProvider)
+libraryLoader.load("myNativeLib")
 ```
 
-Using the network stack as an example, a developer would do the following to provide a custom implementation and remove the default Mapbox implementation:
-- Create the `CustomHttpClientImpl` class that overrides `HttpClient`
-- Annotate that class with `@MapboxModule(MapboxModuleType.HttpClient, enableConfiguration = true/false)`
-- If necessary, insert the instance provider using the generated `Mapbox_HttpClientModuleConfiguration.moduleProvider` field
+Using the native library loader as an example, a developer would do the following to provide a custom implementation and remove the default Mapbox implementation:
+- Create the `CustomLibraryLoaderImpl` class that implements `LibraryLoader`
+- Annotate that class with `@MapboxModule(MapboxModuleType.LibraryLoader, enableConfiguration = true/false)`
+- If necessary, insert the instance provider using the generated `Mapbox_LibraryLoaderModuleConfiguration.moduleProvider` field
 - Adjust the build file to exclude the undesired default implementation and kickstart the generation:
 ```
 compileOnly("com.mapbox.base:android-annotations:0.1.0")
 kapt("com.mapbox.base:android-annotations-processsor:0.1.0")
 
 implementation("com.mapbox.sdk:android:1.0.0") {
-    exclude group: "com.mapbox.sdk", module: "module-http-client"
+    exclude group: "com.mapbox.sdk", module: "default-library-loader"
 }
 ```
 
