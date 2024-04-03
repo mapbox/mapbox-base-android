@@ -57,7 +57,6 @@ class ModuleProviderTest {
   private fun paramsProvider(type: MapboxModuleType): Array<ModuleProviderArgument> {
     return when (type) {
       MapboxModuleType.CommonLibraryLoader -> arrayOf()
-      MapboxModuleType.CommonHttpClient -> TODO("not implemented")
       MapboxModuleType.CommonLogger -> arrayOf(
         ModuleProviderArgument(TripNotification::class.java, MapboxModuleProvider.createModule(MapboxModuleType.NavigationTripNotification, ::paramsProvider))
       )

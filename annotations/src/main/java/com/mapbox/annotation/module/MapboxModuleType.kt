@@ -31,11 +31,6 @@ enum class MapboxModuleType(
   CommonLibraryLoader("LibraryLoader", "com.mapbox.common.module", "LibraryLoader"),
 
   /**
-   * Module used to perform http request.
-   */
-  CommonHttpClient("HttpClient", "com.mapbox.common", "HttpServiceInterface"),
-
-  /**
    * Exposes logger hooks.
    */
   CommonLogger("Logger", "com.mapbox.base.common.logger", "Logger"),
