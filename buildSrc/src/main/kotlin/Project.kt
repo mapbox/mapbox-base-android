@@ -19,7 +19,7 @@ object Dependencies {
   const val serviceProvider = "com.google.auto.service:auto-service:${Versions.serviceProvider}"
   const val mockk = "io.mockk:mockk:${Versions.mockk}"
   const val junit = "androidx.test.ext:junit:${Versions.junit}"
-  const val navigationBase = "com.mapbox.navigation:base:${Versions.navigationBase}"
+  const val navigationBase = "com.mapbox.navigationcore:base:${Versions.navigationBase}"
   const val incapRuntime = "net.ltgt.gradle.incap:incap:${Versions.incap}"
   const val incapProcessor = "net.ltgt.gradle.incap:incap-processor:${Versions.incap}"
 }
@@ -36,7 +36,7 @@ private object Versions {
   const val sdkRegistry = "0.7.0"
   const val mockk = "1.10.0"
   const val junit = "1.1.2"
-  const val navigationBase = "1.0.0-rc.6"
+  const val navigationBase = "3.3.0"
 }
 
 object ArtifactSettings {
