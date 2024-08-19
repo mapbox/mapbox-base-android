@@ -27,7 +27,7 @@ object Dependencies {
 private object Versions {
   const val incap = "0.3"
   const val tools = "4.1.3"
-  const val kotlin = "1.4.10"
+  const val kotlin = "1.5.0"
   const val androidX = "1.1.0"
   const val license = "0.8.91"
   const val kotlinPoet = "1.6.0"
