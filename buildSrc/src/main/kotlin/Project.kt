@@ -29,7 +29,7 @@ private object Versions {
   const val tools = "4.1.3"
   const val kotlin = "1.4.10"
   const val androidX = "1.1.0"
-  const val license = "0.8.5"
+  const val license = "0.8.91"
   const val kotlinPoet = "1.6.0"
   const val serviceProvider = "1.0-rc7"
   const val dokka = "0.9.18"
