@@ -13,7 +13,7 @@ object Plugins {
 }
 
 object Dependencies {
-  const val kotlin = "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${Versions.kotlin}"
+  const val kotlin = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${Versions.kotlin}"
   const val annotations = "androidx.annotation:annotation:${Versions.androidX}"
   const val kotlinPoet = "com.squareup:kotlinpoet:${Versions.kotlinPoet}"
   const val serviceProvider = "com.google.auto.service:auto-service:${Versions.serviceProvider}"
@@ -27,7 +27,7 @@ object Dependencies {
 private object Versions {
   const val incap = "0.3"
   const val tools = "4.1.3"
-  const val kotlin = "1.4.10"
+  const val kotlin = "1.7.20"
   const val androidX = "1.1.0"
   const val license = "0.8.5"
   const val kotlinPoet = "1.6.0"
