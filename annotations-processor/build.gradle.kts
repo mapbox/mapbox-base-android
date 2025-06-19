@@ -1,21 +1,21 @@
 plugins {
   kotlin("jvm")
   kotlin("kapt")
-  id("org.jetbrains.dokka-android")
+  id("org.jetbrains.dokka")
 }
 
 dependencies {
   implementation(project(":annotations"))
-  implementation(Dependencies.kotlin)
-  implementation(Dependencies.kotlinPoet)
-  implementation(Dependencies.serviceProvider)
-  kapt(Dependencies.serviceProvider)
-  compileOnly(Dependencies.incapRuntime)
-  kapt(Dependencies.incapProcessor)
+  implementation(baseLibs.kotlin)
+  implementation(baseLibs.kotlinPoet)
+  implementation(baseLibs.serviceProvider)
+  kapt(baseLibs.serviceProvider)
+  compileOnly(baseLibs.incapRuntime)
+  kapt(baseLibs.incapProcessor)
 }
 
 project.apply {
-  from("$rootDir/gradle/ktlint.gradle")
-  from("$rootDir/gradle/java-artifacts.gradle")
-  from("$rootDir/gradle/sdk-registry-publish.gradle")
+  from("$projectDir/../gradle/ktlint.gradle")
+  from("$projectDir/../gradle/java-artifacts.gradle")
+  from("$projectDir/../gradle/sdk-registry-publish.gradle")
 }
