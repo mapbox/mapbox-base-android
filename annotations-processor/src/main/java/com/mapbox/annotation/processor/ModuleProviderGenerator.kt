@@ -112,6 +112,7 @@ internal class ModuleProviderGenerator : AbstractProcessor() {
       // if configuration is enabled, generate module instance provider field that has to be passed by the user
       val providerInterface =
         TypeSpec.interfaceBuilder(MODULE_CONFIGURATION_PROVIDER_CLASS_NAME)
+          .addAnnotation(Keep::class)
           .addFunction(
             FunSpec.builder(String.format(MODULE_CONFIGURATION_PROVIDER_METHOD_FORMAT, module.simplifiedName))
               .addModifiers(KModifier.ABSTRACT)

@@ -1,7 +1,7 @@
 buildscript {
   repositories {
     google()
-    jcenter()
+    mavenCentral()
 
     maven {
       authentication {
@@ -20,18 +20,23 @@ buildscript {
   }
 
   dependencies {
-    classpath(Plugins.android)
-    classpath(Plugins.kotlin)
-    classpath(Plugins.license)
-    classpath(Plugins.dokka)
-    classpath(Plugins.sdkRegistry)
+    fun applyClasspath(provider: Provider<PluginDependency>) {
+      val dependency = provider.get()
+      classpath("${dependency.pluginId}:${dependency.version}")
+    }
+
+    applyClasspath(baseLibs.plugins.android)
+    applyClasspath(baseLibs.plugins.kotlin)
+    applyClasspath(baseLibs.plugins.license)
+    applyClasspath(baseLibs.plugins.dokka)
+    applyClasspath(baseLibs.plugins.sdkRegistry)
   }
 }
 
 allprojects {
   repositories {
     google()
-    jcenter()
+    mavenCentral()
 
     maven {
       authentication {
