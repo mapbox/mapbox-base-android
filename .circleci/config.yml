@@ -5,6 +5,7 @@ executors:
     docker:
       - image: mbgl/android-ndk-r21e:latest
     working_directory: ~/code
+    resource_class: xlarge
     environment:
       MBX_CI_DOMAIN: o619qyc20d.execute-api.us-east-1.amazonaws.com
 
