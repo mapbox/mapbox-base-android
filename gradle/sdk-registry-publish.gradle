@@ -61,6 +61,10 @@ task javadocsJar(type: Jar, dependsOn: dokkaJavadoc) {
     from dokkaJavadoc.outputDirectory
 }
 
+tasks.withType(Jar) {
+  duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+}
+
 tasks.withType(Javadoc) {
     options.addStringOption('encoding', 'UTF-8')
     options.addStringOption('docencoding', 'UTF-8')
