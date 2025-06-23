@@ -56,9 +56,9 @@ registry {
     publications = ["MapboxBasePublication"]
 }
 
-task javadocsJar(type: Jar, dependsOn: dokka) {
+task javadocsJar(type: Jar, dependsOn: dokkaJavadoc) {
     classifier = 'javadoc'
-    from dokka.outputDirectory
+    from dokkaJavadoc.outputDirectory
 }
 
 tasks.withType(Javadoc) {

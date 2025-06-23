@@ -2,37 +2,43 @@ plugins {
   id("com.android.library")
   kotlin("android")
   id("com.jaredsburrows.license")
-  id("org.jetbrains.dokka-android")
+  id("org.jetbrains.dokka")
 }
 
 android {
-  compileSdkVersion(AndroidVersions.compileSdkVersion)
+  compileSdkVersion(baseLibs.versions.compileSdkVersion.get().toInt())
 
   defaultConfig {
-    minSdkVersion(AndroidVersions.minSdkVersion)
-    targetSdkVersion(AndroidVersions.targetSdkVersion)
+    minSdkVersion(baseLibs.versions.minSdkVersion.get().toInt())
+    targetSdkVersion(baseLibs.versions.targetSdkVersion.get().toInt())
     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
   }
 
+  compileOptions {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+  }
+
   kotlinOptions{
+    jvmTarget = JavaVersion.VERSION_1_8.toString()
     freeCompilerArgs = listOf("-module-name", "common-android")
   }
 }
 
 dependencies {
-  implementation(Dependencies.kotlin)
+  implementation(baseLibs.kotlin)
 
   implementation(project(":annotations"))
 
   /**
    * Required for @Keep annotation by the annotation-processor and the resulting generated code
    */
-  implementation(Dependencies.annotations)
+  implementation(baseLibs.annotations)
 }
 
 project.apply {
-  from("$rootDir/gradle/ktlint.gradle")
-  from("$rootDir/gradle/lint.gradle")
-  from("$rootDir/gradle/android-artifacts.gradle")
-  from("$rootDir/gradle/sdk-registry-publish.gradle")
+  from("$projectDir/../gradle/ktlint.gradle")
+  from("$projectDir/../gradle/lint.gradle")
+  from("$projectDir/../gradle/android-artifacts.gradle")
+  from("$projectDir/../gradle/sdk-registry-publish.gradle")
 }

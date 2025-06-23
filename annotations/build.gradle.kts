@@ -1,19 +1,19 @@
 plugins {
   kotlin("jvm")
-  id("org.jetbrains.dokka-android")
+  id("org.jetbrains.dokka")
 }
 
 dependencies {
-  implementation(Dependencies.kotlin)
+  implementation(baseLibs.kotlin)
 
   /**
    * Required for @Keep annotation by the annotation-processor and the resulting generated code
    */
-  api(Dependencies.annotations)
+  api(baseLibs.annotations)
 }
 
 project.apply {
-  from("$rootDir/gradle/ktlint.gradle")
-  from("$rootDir/gradle/java-artifacts.gradle")
-  from("$rootDir/gradle/sdk-registry-publish.gradle")
+  from("$projectDir/../gradle/ktlint.gradle")
+  from("$projectDir/../gradle/java-artifacts.gradle")
+  from("$projectDir/../gradle/sdk-registry-publish.gradle")
 }
